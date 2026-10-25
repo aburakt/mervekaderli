@@ -1,0 +1,30 @@
+# ORTAK (core): template'ten gelir, sitede elle değiştirilmez (bun run core:sync).
+# Haftalık, gruplu güncelleme PR'ları. bun.lock kökte olduğu için "/" site/ çalışma alanını da kapsar.
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 5
+    # astro check TypeScript 7'yi desteklemiyor ("install TypeScript 6 instead"); destek gelince kaldır.
+    ignore:
+      - dependency-name: typescript
+        update-types: [version-update:semver-major]
+    groups:
+      bun-minor-patch:
+        update-types: [minor, patch]
+      bun-major:
+        update-types: [major]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Istanbul
+    groups:
+      actions:
+        patterns: ["*"]

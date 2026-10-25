@@ -1,0 +1,24 @@
+{
+  "collections": {
+    "settings": "Site ayarları",
+    "posts": "Yazılar",
+    "messages": "İletişim mesajları",
+    "redirects": "Yönlendirmeler",
+    "pages": "Sayfalar"
+  },
+  "fields": {
+    "settings.company_name": "Kurum adı",
+    "settings.form_recipient": "Form bildirim adresi",
+    "settings.cf_analytics_token": "Ziyaret istatistiği anahtarı (Cloudflare)",
+    "messages.status": "Durum",
+    "messages.name": "Ad soyad",
+    "messages.email": "E-posta",
+    "messages.phone": "Telefon",
+    "messages.message": "Mesaj",
+    "messages.kvkk_consent": "KVKK onayı",
+    "messages.notes": "Notlar",
+    "redirects.from": "Eski adres",
+    "redirects.to": "Yeni adres",
+    "redirects.code": "Yönlendirme türü"
+  }
+}

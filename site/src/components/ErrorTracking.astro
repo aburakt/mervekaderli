@@ -1,0 +1,18 @@
+---
+// ORTAK (core): tarayıcı hata takibi (GlitchTip, Sentry uyumlu). Layout <head>'inde <ErrorTracking />.
+// DSN siteye ait `lib/monitoring.ts`'ten gelir, `PUBLIC_GLITCHTIP_DSN` ortam değişkeni ezer; boşsa ya da
+// önizlemede (fixture) ve dev'de hiçbir şey eklenmez. DSN herkese açık bir değerdir (tarayıcıya zaten gider).
+// SDK yalnız DSN varken dinamik import edilir, sayfa render'ını bloklamaz. CSP:
+// GlitchTip kökenini build sonunda pb-csp entegrasyonu ekler.
+import { GLITCHTIP_DSN } from "../lib/monitoring"
+import { isFixtureMode } from "../lib/pb"
+
+const dsn = import.meta.env.PROD && !isFixtureMode() ? (import.meta.env.PUBLIC_GLITCHTIP_DSN ?? GLITCHTIP_DSN) : ""
+---
+{dsn && <meta name="glitchtip-dsn" content={dsn} />}
+{dsn && (
+  <script>
+    const dsn = document.querySelector<HTMLMetaElement>('meta[name="glitchtip-dsn"]')?.content
+    if (dsn) import("../lib/error-tracking").then((m) => m.initErrorTracking(dsn))
+  </script>
+)}

@@ -1,0 +1,21 @@
+{
+  "name": "astro-pb-template",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "site"
+  ],
+  "scripts": {
+    "check": "bun run --filter '@site/web' check",
+    "build": "bun run --filter '@site/web' build",
+    "test": "bun test tests",
+    "verify": "bun scripts/verify.ts",
+    "verify:responsive": "bun scripts/responsive-check.ts",
+    "core:sync": "bun scripts/core-sync.ts",
+    "core:lock": "bun scripts/core-sync.ts --lock",
+    "new-site": "bun scripts/new-site.ts"
+  },
+  "devDependencies": {
+    "oxlint": "1.88.0"
+  }
+}

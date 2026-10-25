@@ -1,0 +1,16 @@
+---
+// ORTAK (core): template'ten gelir, sitede elle değiştirilmez (bun run core:sync). Rehber docs/geo-webmcp.md.
+// Layout'un <head>'ine bir satır: <Geo path={path} />. Sayfanın markdown eşini gösterir ve WebMCP betiğini yükler
+// (paketlenmiş dış dosya; tarayıcıda API yoksa hiçbir şey yapmaz). site/src/lib/geo.ts yoksa çıktı yok.
+import { loadGeo } from "../lib/geo-load"
+import { contentPages, mdPath } from "../lib/llms"
+
+interface Props { path: string }
+const { path } = Astro.props
+const g = await loadGeo()
+const md = g && g.markdown !== false && contentPages(g).some((p) => p.path === path) ? mdPath(path) : undefined
+---
+{md && <link rel="alternate" type="text/markdown" href={md} />}
+<script>
+  import "../scripts/webmcp"
+</script>

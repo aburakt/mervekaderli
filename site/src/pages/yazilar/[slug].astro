@@ -1,0 +1,33 @@
+---
+import Photo from "../../components/Photo.astro"
+import Base from "../../layouts/Base.astro"
+import { loadSite } from "../../lib/content"
+import { formatDate } from "../../lib/format"
+import { article, breadcrumbList, graph } from "../../lib/jsonld"
+import { sanitize } from "../../lib/sanitize"
+import { recordLastmod } from "../../lib/seo"
+import type { Post } from "../../lib/types"
+
+export async function getStaticPaths() {
+  const { posts } = await loadSite()
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }))
+}
+
+const { post } = Astro.props as { post: Post }
+const path = `/yazilar/${post.slug}/`
+recordLastmod(path, post.date)
+// Sayfa düzeyi yapılandırılmış veri (lib/jsonld.ts, core): yazı + gezinti izi. Kurum verisi Head'de (lib/seo.ts).
+const jsonLd = graph(
+  article({ site: Astro.site!, path, name: post.title, description: post.summary, datePublished: post.date, dateModified: post.updated }),
+  breadcrumbList([{ name: "Ana sayfa", path: "/" }, { name: "Yazılar", path: "/#yazilar" }, { name: post.title, path }], Astro.site!),
+)
+---
+<Base title={post.title} path={path} description={post.summary} jsonLd={jsonLd}>
+  <article class="wrap max-w-3xl py-14 md:py-20">
+    <time datetime={post.date} class="text-sm text-ink-soft">{formatDate(post.date)}</time>
+    <h1 class="mt-2 text-[clamp(2rem,4.5vw,3rem)]">{post.title}</h1>
+    {post.cover && <Photo img={post.cover} alt={post.title} class="mt-8 w-full rounded-2xl" sizes="(min-width: 768px) 720px, 100vw" />}
+    <div class="prose-body mt-8" set:html={sanitize(post.body)} />
+    <p class="mt-12"><a href="/#yazilar">Tüm yazılar</a></p>
+  </article>
+</Base>

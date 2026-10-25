@@ -1,0 +1,49 @@
+# ORTAK (core): template'ten gelir, sitede elle değiştirilmez (bun run core:sync).
+# Sunucudaki PB hook'ları ve migration'ları repodan geri kaldıysa issue açar (salt-okur; sunucuya hiçbir şey yazmaz).
+# Repo değişkeni gerekir: PB_URL (ör. https://cms.ornek.com; Settings → Secrets and variables → Actions → Variables).
+# Yoksa iş atlanır. Sunucuda Caddy'nin /api/<ID>/core-version yoluna izin vermesi gerekir.
+name: drift
+
+on:
+  schedule:
+    - cron: "0 7 * * 1" # pazartesi 10:00 (TR), core-sync'ten bir saat sonra
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency: drift
+
+jobs:
+  check:
+    if: github.repository != 'aburakt/astro-pb-template' && vars.PB_URL != ''
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PB_URL: ${{ vars.PB_URL }}
+      TITLE: "Sunucu repodan farklı (PocketBase)"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - name: Karşılaştır
+        run: |
+          set +e
+          bun scripts/drift-check.ts > report.md
+          code=$?
+          set -e
+          cat report.md
+          open=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number -q '.[0].number')
+          if [ "$code" = 0 ]; then
+            if [ -n "$open" ]; then gh issue close "$open" -c "Sunucu repoyla aynı, kapatıldı."; fi
+            exit 0
+          fi
+          if [ -n "$open" ]; then
+            gh issue comment "$open" -F report.md
+          else
+            gh issue create --title "$TITLE" -F report.md
+          fi
+          # Ulaşılamama (2) da issue'ya yazılır, iş kırmızı görünür.
+          exit 1

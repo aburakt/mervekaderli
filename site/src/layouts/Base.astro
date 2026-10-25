@@ -1,0 +1,60 @@
+---
+import "../styles/global.css"
+import ErrorTracking from "../components/ErrorTracking.astro"
+import Geo from "../components/Geo.astro"
+import Head from "../components/Head.astro"
+import { loadSite } from "../lib/content"
+import { lines } from "../lib/format"
+import { type Alternate, DEFAULT_LANG, type Lang } from "../lib/i18n"
+import { isFixtureMode } from "../lib/pb"
+import { cfBeacon } from "../lib/seo"
+
+// lang/alternates yalnız çok dilli sitede verilir (docs/i18n.md); varsayılan tek dil.
+interface Props { title?: string; path: string; description?: string; jsonLd?: object; lang?: Lang; alternates?: Alternate[] }
+const { title, path, description, jsonLd, lang = DEFAULT_LANG, alternates = [] } = Astro.props
+const { settings, pages } = await loadSite()
+const year = new Date().getFullYear()
+// Çerezsiz ziyaret sayacı (Cloudflare Web Analytics): dış betik, inline kod yok; önizlemede (fixture) eklenmez.
+const beacon = isFixtureMode() ? undefined : cfBeacon(settings.cfAnalyticsToken)
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <Head title={title} path={path} description={description} jsonLd={jsonLd} lang={lang} alternates={alternates} />
+    <Geo path={path} />
+    <ErrorTracking />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    {isFixtureMode() && <p data-fixture-banner class="fixture-banner">Önizleme: örnek içerik (PocketBase bağlı değil)</p>}
+    <header class="border-b border-line bg-paper">
+      <div class="wrap flex items-center justify-between py-4">
+        <a href="/" class="text-lg font-semibold text-ink no-underline">{settings.companyName}</a>
+        <nav aria-label="Ana menü" class="flex gap-5"><a href="/#yazilar">Yazılar</a><a href="/#iletisim">İletişim</a></nav>
+      </div>
+    </header>
+    <main id="main" class="flex-1"><slot /></main>
+    <footer class="border-t border-line bg-paper">
+      <div class="wrap grid gap-6 py-10 text-sm text-ink-soft md:grid-cols-2">
+        <address class="not-italic">
+          {lines(settings.address).map((l) => <span class="block">{l}</span>)}
+        </address>
+        <p class="md:text-right">
+          {settings.phone && <span class="block">{settings.phone}</span>}
+          {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
+        </p>
+      </div>
+      <div class="wrap flex flex-wrap gap-x-5 gap-y-2 pb-8 text-xs text-ink-soft">
+        <p>© {year} {settings.companyName}</p>
+        {pages.length > 0 && (
+          <nav aria-label="Yasal bilgiler" class="flex flex-wrap gap-x-5 gap-y-2">
+            {pages.map((p) => <a href={`/${p.slug}/`}>{p.title}</a>)}
+          </nav>
+        )}
+      </div>
+    </footer>
+    <script>
+      import "../scripts/console-egg"
+    </script>
+    {beacon && <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={beacon}></script>}
+  </body>
+</html>

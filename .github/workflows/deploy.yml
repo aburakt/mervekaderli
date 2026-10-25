@@ -1,0 +1,47 @@
+# ORTAK (core): template'ten gelir, sitede elle değiştirilmez (bun run core:sync).
+# main'de pb/pb_hooks ya da pb/pb_migrations değişince sunucudaki PocketBase'e yükler (deploy/server/pb-deploy.sh).
+# Kurulum bir kez: bash deploy/server/deploy-setup.sh <id>=<sahip>/<repo> (sır DEPLOY_SSH_KEY, değişkenler DEPLOY_HOST,
+# DEPLOY_KNOWN_HOSTS). Sır yoksa iş atlanır (sunucuda PB'si olmayan site).
+name: deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pb/pb_hooks/**"
+      - "pb/pb_migrations/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency: deploy
+
+jobs:
+  pb:
+    if: github.repository != 'aburakt/astro-pb-template'
+    runs-on: ubuntu-latest
+    env:
+      KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+      HOST: ${{ vars.DEPLOY_HOST }}
+      KNOWN: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+    steps:
+      - name: Kurulum var mı
+        id: setup
+        run: |
+          if [ -z "$KEY" ] || [ -z "$HOST" ] || [ -z "$KNOWN" ]; then
+            echo "DEPLOY_SSH_KEY/DEPLOY_HOST/DEPLOY_KNOWN_HOSTS yok, atlandı (deploy/server/deploy-setup.sh)."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v7
+        if: steps.setup.outputs.ready == 'true'
+      - name: Yükle
+        if: steps.setup.outputs.ready == 'true'
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$KNOWN" > ~/.ssh/known_hosts
+          tar -C pb -cz pb_hooks pb_migrations \
+            | ssh -i ~/.ssh/deploy -o BatchMode=yes -o StrictHostKeyChecking=yes "pbdeploy@$HOST"

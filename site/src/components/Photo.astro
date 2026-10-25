@@ -1,0 +1,16 @@
+---
+// ORTAK (core): template'ten gelir, sitede elle değiştirilmez (bun run core:sync).
+import { Image } from "astro:assets"
+import { isRemoteRaster, remoteDims } from "../lib/image"
+import type { Img } from "../lib/types"
+
+interface Props { img: Img; alt: string; class?: string; sizes?: string; width?: number; height?: number; loading?: "lazy" | "eager" }
+const { img, alt, class: cls, sizes, width, height, loading = "lazy" } = Astro.props
+// Panelden yüklenen görsel (ör. 4000 px telefon fotoğrafı) build'de WebP'ye çevrilir ve gösterildiği genişliğe küçültülür; asıl boyutundan büyütülmez.
+const remote = isRemoteRaster(img.src) ? await remoteDims(img.src, width ?? 1200) : undefined
+---
+{typeof img.src !== "string"
+  ? <Image src={img.src} alt={alt} class={cls} sizes={sizes} width={width} height={height} widths={[480, 800, 1200]} loading={loading} />
+  : remote
+    ? <Image src={img.src} alt={alt} class={cls} sizes={sizes} width={remote.width} height={remote.height} widths={remote.widths} format="webp" quality={80} loading={loading} />
+    : <img src={img.src} alt={alt} class={cls} loading={loading} decoding="async" />}

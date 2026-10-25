@@ -1,0 +1,39 @@
+---
+import { loadSite } from "../lib/content"
+import { shareImageUrl } from "../lib/image"
+import { type Alternate, DEFAULT_LANG, hreflangLinks, type Lang, LOCALES } from "../lib/i18n"
+import { isFixtureMode } from "../lib/pb"
+import { jsonLdText, organizationJsonLd } from "../lib/seo"
+
+// Sayfa başlığı, açıklama, paylaşım (og) ve yapılandırılmış veri. Ana sayfada kurum (Organization/LocalBusiness)
+// verisi Site Ayarları'ndan kendiliğinden eklenir; sayfa kendi verisini jsonLd ile verir.
+// application/ld+json veri bloğudur, tarayıcı çalıştırmaz: CSP script-src'ye takılmaz, verify bunu inline betik saymaz.
+// lang/alternates: çok dilli sitede sayfanın dili ve eşleri (lib/i18n.ts); tek dilli sitede verilmez, hreflang çıkmaz.
+interface Props { title?: string; path: string; description?: string; jsonLd?: object; noindex?: boolean; lang?: Lang; alternates?: Alternate[] }
+const { title, path, description, jsonLd, noindex: force = false, lang = DEFAULT_LANG, alternates = [] } = Astro.props
+const { settings } = await loadSite()
+const fullTitle = title ? `${title} | ${settings.companyName}` : settings.companyName
+const shareImg = settings.shareImage ?? settings.heroImage
+const ogImage = shareImg ? new URL(await shareImageUrl(shareImg), Astro.site).href : undefined
+const canonical = new URL(path, Astro.site).href
+const desc = description ?? settings.seoDescription
+const org = path === "/" ? organizationJsonLd(settings, Astro.site!.href, ogImage) : undefined
+const noindex = force || isFixtureMode() || (process.env.NOINDEX ?? import.meta.env.NOINDEX) === "1"
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={desc} />
+<link rel="canonical" href={canonical} />
+{hreflangLinks(alternates).map((a) => <link rel="alternate" hreflang={a.hreflang} href={new URL(a.href, Astro.site).href} />)}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta name="color-scheme" content="light" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content={LOCALES[lang].og} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={desc} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage ?? new URL("/favicon.svg", Astro.site).href} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{org && <script type="application/ld+json" set:html={jsonLdText(org)} />}
+{jsonLd && <script type="application/ld+json" set:html={jsonLdText(jsonLd)} />}

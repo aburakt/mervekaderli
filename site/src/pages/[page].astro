@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro"
+import { loadSite } from "../lib/content"
+import { sanitize } from "../lib/sanitize"
+import type { Page } from "../lib/types"
+
+// Paneldeki Sayfalar (yasal metinler vb.): /<adres>/. Yalnız yayındaki sayfalar üretilir; bağlantıları sayfa altında.
+export async function getStaticPaths() {
+  const { pages } = await loadSite()
+  return pages.map((page) => ({ params: { page: page.slug }, props: { page } }))
+}
+
+const { page } = Astro.props as { page: Page }
+---
+<Base title={page.title} path={`/${page.slug}/`} description={page.seoDescription || undefined}>
+  <article class="wrap max-w-3xl py-14 md:py-20">
+    <h1 class="text-[clamp(2rem,4.5vw,3rem)]">{page.title}</h1>
+    <div class="prose-body mt-8" set:html={sanitize(page.body)} />
+  </article>
+</Base>

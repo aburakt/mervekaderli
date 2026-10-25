@@ -1,0 +1,34 @@
+---
+// SİTEYE ÖZEL (örnek): ziyaretçi formu, PB "messages" kutusuna gönderir (pb/pb_hooks/site.js FORMS).
+// Spam tuzağı (website), KVKK onayı ve bildirim PB tarafında (forms.pb.js, core). Önizlemede (fixture) form kapalıdır.
+// CSP: gönderim fetch ile PB adresine gider; connect-src'ye PB adresi build'de eklenir (integrations/pb-csp.ts).
+// WebMCP bildirimsel API (docs/geo-webmcp.md): toolname/tooldescription/toolparamdescription tarayıcıdaki ajana formu
+// tanıtır; ajan alanları doldurabilir, toolautosubmit OLMADIĞI için gönder düğmesine ziyaretçi kendisi basar.
+import { isFixtureMode, pbUrl } from "../lib/pb"
+
+interface Props { collection?: string }
+const { collection = "messages" } = Astro.props
+const fixture = isFixtureMode()
+const endpoint = fixture ? "" : `${pbUrl()}/api/collections/${collection}/records`
+---
+{fixture ? (
+  <p data-fixture-notice class="text-ink-soft">İletişim formu önizlemede kapalıdır.</p>
+) : (
+  <form data-contact-form toolname="contact_message" tooldescription="Kuruma mesaj formu: ad, e-posta, isteğe bağlı telefon ve mesaj. Ajan alanları doldurur; gönderimi ve KVKK onayını ziyaretçi kendisi yapar." method="post" data-endpoint={endpoint} data-ok="Teşekkürler, mesajınız alındı. En kısa sürede dönüş yapacağız." data-fail="Mesaj gönderilemedi. Lütfen biraz sonra tekrar deneyin ya da bize telefonla ulaşın." class="card grid max-w-2xl gap-4 p-6">
+    <label class="field">Ad soyad<input name="name" toolparamdescription="Ziyaretçinin adı ve soyadı" autocomplete="name" required maxlength="200" /></label>
+    <div class="grid gap-4 md:grid-cols-2">
+      <label class="field">E-posta<input name="email" type="email" toolparamdescription="Dönüş yapılacak e-posta adresi" autocomplete="email" required /></label>
+      <label class="field">Telefon (isteğe bağlı)<input name="phone" type="tel" toolparamdescription="İsteğe bağlı telefon numarası" autocomplete="tel" maxlength="50" /></label>
+    </div>
+    <label class="field">Mesajınız<textarea name="message" toolparamdescription="Ziyaretçinin sorusu ya da talebi" required maxlength="5000" rows="5"></textarea></label>
+    <label class="flex items-start gap-2 text-sm"><input name="kvkk_consent" type="checkbox" required class="mt-1" />Kişisel verilerimin, mesajıma dönüş yapılması amacıyla işlenmesine ilişkin aydınlatma metnini okudum ve onaylıyorum.</label>
+    <div aria-hidden="true" class="hp"><label>Web sitesi<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+    <div class="flex flex-wrap items-center gap-4">
+      <button type="submit" class="btn">Gönder</button>
+      <p data-form-status role="status" class="text-sm"></p>
+    </div>
+  </form>
+)}
+<script>
+  import "../scripts/contact-form"
+</script>

@@ -1,0 +1,4 @@
+# Sabit yönlendirmeler (isteğe bağlı): build bunları panel Yönlendirmeleri'nin önüne ekleyip dist/_redirects yazar.
+# Biçim Cloudflare Pages _redirects ile aynı: "eski-adres yeni-adres [kod]" (kod yoksa 302). # ile başlayan satır yorumdur.
+# Eski siteden gelen, müşterinin değiştirmeyeceği toplu adresler buraya; tek tek değişebilenler panele.
+/index.html / 301

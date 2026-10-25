@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/*
+ * Template'in sade başlangıç teması. Yeni sitede sektöre uygun tasarımla değiştirilir (ne simsiyah ne bembeyaz).
+ * Tek sabit tema: koyu moda otomatik geçiş yok. CSP style-src 'self': stil yalnız bu dosyada, style= özniteliği kullanılmaz.
+ */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-canvas: #f6f5f1;
+  --color-paper: #ffffff;
+  --color-line: #e2dfd6;
+  --color-ink: #1f2124;
+  --color-ink-soft: #5d6066;
+  --color-accent: #2f5d50;
+}
+
+@layer base {
+  :root { color-scheme: light; }
+  body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-canvas); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-weight: 650; line-height: 1.15; text-wrap: balance; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  a { color: var(--color-accent); text-underline-offset: 0.22em; }
+  p, li, h1, h2, h3, a, address { overflow-wrap: anywhere; }
+}
+
+@layer components {
+  .wrap { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+  .lead { font-size: 1.1rem; color: var(--color-ink-soft); max-width: 60ch; }
+  .card { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: 1rem; }
+  .prose-body > * + * { margin-top: 1em; }
+  .prose-body h2 { font-size: 1.5rem; margin-top: 1.6em; }
+  .prose-body ul { list-style: disc; padding-left: 1.4rem; }
+  .prose-body ol { list-style: decimal; padding-left: 1.4rem; }
+  .field { display: grid; gap: 0.35rem; font-size: 0.95rem; }
+  .field input, .field textarea { width: 100%; border: 1px solid var(--color-line); border-radius: 0.5rem; padding: 0.6rem 0.75rem; background: var(--color-paper); font: inherit; }
+  .btn { background: var(--color-accent); color: #fff; border-radius: 0.5rem; padding: 0.6rem 1.4rem; font-weight: 600; cursor: pointer; }
+  .btn:disabled { opacity: 0.6; cursor: wait; }
+  /* spam tuzağı: ekranda ve ekran okuyucuda yok, botlar doldurur */
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .fixture-banner { background: #fff4d6; border-bottom: 1px solid #ecd9a0; font-size: 0.85rem; text-align: center; padding: 0.4rem 1rem; }
+}

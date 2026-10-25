@@ -1,0 +1,12 @@
+_yedek/
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.astro/
+.cache/
+.audit/
+*.log
+pb/pb_data/
+__pycache__/

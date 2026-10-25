@@ -1,0 +1,60 @@
+# ORTAK (core): template'ten gelir, sitede elle değiştirilmez (bun run core:sync).
+name: ci
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      # Bilinen açık: high/critical CI'yı kırar; low/moderate (çoğu build araçlarında) Dependabot PR'larıyla kapanır
+      - run: bun audit --audit-level=high
+      - run: bunx oxlint
+      - run: bun run check
+      # hooks testi yavaş (debounce bekler); ayrı işte koşar
+      - run: bun test $(ls tests/*.test.ts | grep -v hooks.test.ts)
+
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - run: bun run verify
+
+  hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - run: bun test tests/hooks.test.ts
+
+  # Her sayfa birçok genişlikte taşma kontrolü (Bun.WebView). Linux'ta Bun, runner'da hazır gelen Chrome'u kullanır:
+  # --no-sandbox (Ubuntu 24.04 AppArmor ad alanı kısıtı), --hide-scrollbars (macOS'taki gibi kaydırma çubuğu genişlik yemesin).
+  responsive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - name: Chrome (Bun.WebView)
+        run: |
+          printf '#!/bin/sh\nexec "%s" --no-sandbox --hide-scrollbars "$@"\n' "$(command -v google-chrome || command -v chromium)" > "$RUNNER_TEMP/chrome"
+          chmod +x "$RUNNER_TEMP/chrome"
+          echo "BUN_CHROME_PATH=$RUNNER_TEMP/chrome" >> "$GITHUB_ENV"
+      - run: bun run verify:responsive

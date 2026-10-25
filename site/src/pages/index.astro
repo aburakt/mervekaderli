@@ -1,0 +1,35 @@
+---
+import ContactForm from "../components/ContactForm.astro"
+import Photo from "../components/Photo.astro"
+import Base from "../layouts/Base.astro"
+import { loadSite } from "../lib/content"
+import { formatDate } from "../lib/format"
+
+const { settings, posts } = await loadSite()
+---
+<Base path="/">
+  <section class="wrap py-16 md:py-24">
+    <h1 class="text-[clamp(2.2rem,5vw,3.6rem)]">{settings.heroTitle}</h1>
+    {settings.heroText && <p class="lead mt-5">{settings.heroText}</p>}
+    {settings.heroImage && <Photo img={settings.heroImage} alt={settings.heroTitle} class="mt-10 w-full rounded-2xl" sizes="(min-width: 1152px) 1152px, 100vw" loading="eager" />}
+  </section>
+
+  <section id="yazilar" class="wrap pb-20">
+    <h2 class="text-2xl">Yazılar</h2>
+    <ul class="mt-6 grid gap-4 md:grid-cols-2">
+      {posts.map((p) => (
+        <li class="card p-6">
+          <time datetime={p.date} class="text-sm text-ink-soft">{formatDate(p.date)}</time>
+          <h3 class="mt-1 text-xl"><a href={`/yazilar/${p.slug}/`}>{p.title}</a></h3>
+          <p class="mt-2 text-ink-soft">{p.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="iletisim" class="wrap pb-20">
+    <h2 class="text-2xl">İletişim</h2>
+    <p class="mt-2 text-ink-soft">Sorularınızı yazın, size dönüş yapalım.</p>
+    <div class="mt-6"><ContactForm /></div>
+  </section>
+</Base>

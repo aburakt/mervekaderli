@@ -1,0 +1,22 @@
+# /etc/systemd/system/pb-merve.service — Merve Kaderli Ceramic Studio PocketBase. scripts/new-site.ts üretti.
+# Sunucudaki diğer unit'lerle karşılaştırın: systemctl cat pb-keyfince
+[Unit]
+Description=PocketBase merve (cms.mervekaderli.pages.dev)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/pb-merve
+EnvironmentFile=/opt/pb-merve/.env
+ExecStart=/opt/pb-merve/pocketbase serve --http=127.0.0.1:8100 --dir /opt/pb-merve/pb_data --migrationsDir /opt/pb-merve/pb_migrations --hooksDir /opt/pb-merve/pb_hooks --encryptionEnv=PB_ENCRYPTION_KEY
+Restart=always
+RestartSec=5
+LimitNOFILE=4096
+MemoryMax=512M
+CPUQuota=50%
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

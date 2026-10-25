@@ -1,0 +1,92 @@
+---
+import AddToCart from "../../components/AddToCart.astro"
+import Photo from "../../components/Photo.astro"
+import ProductCard from "../../components/ProductCard.astro"
+import Base from "../../layouts/Base.astro"
+import { isWorkshop, price, stockNote } from "../../lib/catalog"
+import { loadSite } from "../../lib/content"
+import { shareImageUrl } from "../../lib/image"
+import { breadcrumbList, graph } from "../../lib/jsonld"
+import { sanitize } from "../../lib/sanitize"
+import { shopSettings } from "../../lib/shop-config"
+import type { Product } from "../../lib/types"
+
+export async function getStaticPaths() {
+  const { products } = await loadSite()
+  const items = products.filter((p) => !isWorkshop(p))
+  return items.map((product, i) => ({
+    params: { slug: product.slug },
+    // aynı sayfada "diğer parçalar": sıradaki dört ürün (satıştakiler)
+    props: { product, others: [...items.slice(i + 1), ...items.slice(0, i)].filter((p) => p.stock > 0).slice(0, 4) },
+  }))
+}
+
+const { product: p, others } = Astro.props as { product: Product; others: Product[] }
+const path = `/urunler/${p.slug}/`
+const note = stockNote(p)
+const ship = shopSettings()?.shipping
+const fmt = (n: number) => new Intl.NumberFormat("tr-TR").format(n)
+const image = p.images[0] ? new URL(await shareImageUrl(p.images[0]), Astro.site).href : undefined
+const url = new URL(path, Astro.site).href
+const jsonLd = graph(
+  {
+    "@type": "Product", "@id": `${url}#product`, name: p.title, description: p.summary, url, image: image ? [image] : undefined,
+    brand: { "@type": "Brand", name: "Merve Kaderli Ceramic Studio" },
+    offers: {
+      "@type": "Offer", url, priceCurrency: "TRY", price: p.price.toFixed(2),
+      availability: p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut", itemCondition: "https://schema.org/NewCondition",
+    },
+  },
+  breadcrumbList([{ name: "Ana sayfa", path: "/" }, { name: "Koleksiyon", path: "/urunler/" }, { name: p.title, path }], Astro.site!),
+)
+---
+<Base title={p.title} path={path} description={p.summary} jsonLd={jsonLd}>
+  <nav aria-label="Gezinti izi" class="wrap pt-8 text-sm text-ink-soft"><a href="/urunler/">Koleksiyon</a> / <span>{p.title}</span></nav>
+  <section class="wrap grid gap-10 pt-6 md:grid-cols-[1.1fr_0.9fr] md:gap-16" data-product-id={p.id}>
+    <div class="grid content-start gap-3" data-gallery>
+      {p.images.map((img, i) => (
+        <div class="gallery-main" data-slide hidden={i > 0}>
+          <Photo img={img} alt={`${p.title}, fotoğraf ${i + 1}`} sizes="(min-width: 768px) 52vw, 92vw" width={1200} loading={i === 0 ? "eager" : "lazy"} />
+        </div>
+      ))}
+      {p.images.length > 1 && (
+        <div class="thumbs">
+          {p.images.map((img, i) => (
+            <button type="button" data-thumb={i} aria-current={i === 0 ? "true" : "false"} aria-label={`Fotoğraf ${i + 1}`}>
+              <Photo img={img} alt="" sizes="120px" width={240} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+    <div class="md:sticky md:top-28 md:self-start">
+      <p class="eyebrow">El yapımı seramik</p>
+      <h1 class="title-lg mt-3">{p.title}</h1>
+      <p class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+        <span class="price text-2xl">{price(p.price)}</span>
+        <span class="soft text-sm" data-stock-text>{note ? note.label : "Stokta"}</span>
+      </p>
+      <p class="lead mt-5">{p.summary}</p>
+      <div class="mt-7"><AddToCart product={p} qty /></div>
+      <ul class="mt-8 grid gap-2 border-t border-line pt-6 text-sm">
+        <li>Stüdyoda elde şekillendirilir ve elle boyanır.</li>
+        {ship && <li>{ship.freeOver > 0 ? `${fmt(ship.freeOver)} TL ve üzeri siparişte kargo ücretsiz` : "Kargo"}{ship.price > 0 ? `, altında ${fmt(ship.price)} TL.` : "."}</li>}
+        <li>Özenle, kırılmaya karşı korumalı paketlenir.</li>
+        <li>Ödeme Shopier güvenli ödeme sayfasında alınır; kart bilgileriniz bize gelmez.</li>
+      </ul>
+      <div class="prose-body mt-8 border-t border-line pt-6" set:html={sanitize(p.description)} />
+    </div>
+  </section>
+
+  {others.length > 0 && (
+    <section class="wrap pt-24" aria-labelledby="diger">
+      <h2 id="diger" class="title-lg">Bunlar da <em>hoşunuza</em> gidebilir</h2>
+      <ul class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {others.map((o) => <li><ProductCard product={o} /></li>)}
+      </ul>
+    </section>
+  )}
+</Base>
+<script>
+  import "../../scripts/shop-ui"
+</script>

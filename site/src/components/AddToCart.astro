@@ -1,0 +1,27 @@
+---
+import { isUpcoming, isWorkshop, thumb } from "../lib/catalog"
+import type { Product } from "../lib/types"
+
+// Sepete ekleme: veriler data-* özniteliğinde, davranış scripts/shop-ui.ts'te (inline betik yok).
+// Fiyat ve stok burada build anındakidir; sayfa açılınca canlı stokla tazelenir, ödeme adımında sunucu yeniden hesaplar.
+interface Props { product: Product; qty?: boolean }
+const { product: p, qty = false } = Astro.props
+const workshop = isWorkshop(p)
+const closed = workshop && !isUpcoming(p)
+const out = p.stock <= 0 || closed
+const label = workshop ? "Yerimi ayır" : "Sepete ekle"
+const image = await thumb(p.images[0])
+---
+<div class="grid gap-3" data-buy data-id={p.id} data-title={p.title} data-price={p.price} data-kind={p.kind} data-max={p.stock} data-url={workshop ? "/atolyeler/" : `/urunler/${p.slug}/`} data-image={image} data-label={label} data-out-label={workshop ? "Kontenjan doldu" : "Tükendi"}>
+  <div class="flex flex-wrap items-center gap-3">
+    {qty && (
+      <div class="qty" role="group" aria-label="Adet">
+        <button type="button" data-qty-dec aria-label="Bir azalt" disabled>−</button>
+        <output data-qty aria-live="polite">1</output>
+        <button type="button" data-qty-inc aria-label="Bir artır" disabled={p.stock <= 1}>+</button>
+      </div>
+    )}
+    <button type="button" class="btn" data-add disabled={out}>{closed ? "Tamamlandı" : out ? (workshop ? "Kontenjan doldu" : "Tükendi") : label}</button>
+  </div>
+  <p data-buy-status role="status" class="text-sm"></p>
+</div>

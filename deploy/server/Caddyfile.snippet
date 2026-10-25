@@ -1,0 +1,8 @@
+# Merve Kaderli Ceramic Studio: /etc/caddy/pocketbase.caddy içine eklenir. scripts/new-site.ts üretti.
+# !!! Sunucudaki mevcut bloklarla karşılaştırın (grep -n -A6 '^cms\.' /etc/caddy/pocketbase.caddy): "import pocketbase" snippet adı aynı olmalı.
+# Panel doğrudan açık (https://cms.mervekaderli.pages.dev/_/): müşteri hesabı guard.js ile yalnız içerik düzenler; superuser girişleri MFA ile korunur (SMTP gerekir).
+cms.mervekaderli.pages.dev {
+	import pocketbase
+	header X-Robots-Tag "noindex, nofollow"
+	reverse_proxy 127.0.0.1:8100
+}

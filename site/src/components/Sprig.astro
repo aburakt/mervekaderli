@@ -1,0 +1,14 @@
+---
+// El çizimi dal süsü (dekoratif; ekran okuyucudan gizli).
+interface Props { class?: string }
+const { class: cls = "sprig" } = Astro.props
+---
+<svg class={cls} viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true">
+  <path d="M4 30c22-4 48-8 112-22" />
+  <path d="M30 26c-2-8 3-14 10-16-1 8-4 13-10 16Z" />
+  <path d="M50 22c1-8 7-12 14-12-3 7-7 11-14 12Z" />
+  <path d="M72 17c3-7 9-10 16-8-4 6-9 9-16 8Z" />
+  <path d="M40 24c5 5 12 7 18 5-5-4-11-6-18-5Z" />
+  <path d="M64 19c5 4 12 5 17 2-5-3-11-4-17-2Z" />
+  <circle cx="104" cy="11" r="2.6" />
+</svg>

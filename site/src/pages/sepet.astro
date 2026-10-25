@@ -1,0 +1,61 @@
+---
+import Base from "../layouts/Base.astro"
+import { isFixtureMode } from "../lib/pb"
+import { shopSettings } from "../lib/shop-config"
+
+// Sepet ve ödeme: satırlar tarayıcıda (localStorage) çizilir, ödeme formu PB'de siparişi açar ve Shopier'e gönderir
+// (scripts/cart-page.ts). Önizlemede (fixture) PB yok: sepet çalışır, ödeme düğmesi açıklama gösterir.
+const shop = shopSettings()!
+const fixture = isFixtureMode()
+---
+<Base title="Sepetim" path="/sepet/" description="Sepetinizdeki ürünler ve güvenli ödeme." noindex>
+  <section class="wrap pb-8 pt-12 md:pt-16">
+    <h1 class="title-lg">Sepetim</h1>
+  </section>
+  <div class="wrap grid gap-12 lg:grid-cols-[1.1fr_0.9fr]" data-cart data-ship-price={shop.shipping.price} data-ship-free={shop.shipping.freeOver} data-preview={fixture ? "1" : undefined}>
+    <section aria-labelledby="urunler-baslik">
+      <h2 id="urunler-baslik" class="sr-only">Ürünler</h2>
+      <ul data-cart-lines class="border-t border-line"></ul>
+      <div data-cart-empty hidden class="card grid justify-items-start gap-4 p-8">
+        <p class="text-lg">Sepetiniz boş.</p>
+        <div class="flex flex-wrap gap-3"><a href="/urunler/" class="btn">Koleksiyona göz at</a><a href="/atolyeler/" class="btn-ghost">Atölyeler</a></div>
+      </div>
+      <div class="mt-6 grid gap-1" data-cart-summary>
+        <p class="summary-row"><span>Ara toplam</span><span data-subtotal>–</span></p>
+        <p class="summary-row"><span>Kargo</span><span data-shipping>–</span></p>
+        <p class="summary-row" data-total><span>Toplam</span><span data-total-value>–</span></p>
+        <p class="soft text-sm" data-ship-hint></p>
+      </div>
+    </section>
+
+    <section aria-labelledby="odeme-baslik" class="card p-6 md:p-8" data-checkout-box>
+      <h2 id="odeme-baslik" class="text-2xl">Teslimat ve ödeme</h2>
+      <form data-checkout class="mt-6 grid gap-4" novalidate>
+        <label class="field">Ad soyad<input name="name" autocomplete="name" required maxlength="200" /></label>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="field">E-posta<input name="email" type="email" autocomplete="email" required /></label>
+          <label class="field">Telefon<input name="phone" type="tel" autocomplete="tel" required maxlength="50" /></label>
+        </div>
+        <fieldset data-address class="grid gap-4">
+          <legend class="sr-only">Teslimat adresi</legend>
+          <label class="field">Açık adres<textarea name="address" autocomplete="street-address" rows="3" maxlength="500"></textarea></label>
+          <div class="grid gap-4 sm:grid-cols-[1.4fr_0.6fr]">
+            <label class="field">İl / ilçe<input name="city" autocomplete="address-level2" maxlength="100" /></label>
+            <label class="field">Posta kodu<input name="postcode" autocomplete="postal-code" maxlength="20" /></label>
+          </div>
+        </fieldset>
+        <p data-workshop-only hidden class="note">Sepetinizde yalnız atölye var: adres gerekmez, atölye stüdyoda yapılır.</p>
+        <label class="field">Sipariş notu (isteğe bağlı)<textarea name="note" rows="2" maxlength="2000"></textarea></label>
+        <label class="check"><input name="contract_consent" type="checkbox" required /><span><a href="/on-bilgilendirme-formu/" target="_blank">Ön bilgilendirme formunu</a> ve <a href="/mesafeli-satis-sozlesmesi/" target="_blank">mesafeli satış sözleşmesini</a> okudum, onaylıyorum.</span></label>
+        <label class="check"><input name="kvkk_consent" type="checkbox" required /><span>Siparişimin işlenmesi için <a href="/kvkk-aydinlatma-metni/" target="_blank">KVKK aydınlatma metnini</a> okudum.</span></label>
+        <label class="check"><input name="marketing_consent" type="checkbox" /><span>Yeni koleksiyon ve atölye duyurularını e-postayla almak istiyorum (isteğe bağlı).</span></label>
+        <button type="submit" class="btn mt-2 w-full">Ödemeye geç</button>
+        <p data-checkout-status role="status" class="text-sm"></p>
+        <p class="soft text-xs">"Ödemeye geç"e basınca ürünleriniz {shop.reserveMinutes} dakika sizin için ayrılır ve Shopier'in güvenli ödeme sayfasına yönlendirilirsiniz. Kart bilgileriniz bize ulaşmaz.</p>
+      </form>
+    </section>
+  </div>
+</Base>
+<script>
+  import "../scripts/cart-page"
+</script>

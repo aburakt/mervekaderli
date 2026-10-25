@@ -1,7 +1,7 @@
 import content from "../data/content.json"
 import { loadFromPb } from "./pb-loader"
 import { isFixtureMode, pbUrl } from "./pb"
-import type { Img, Redirect, Site } from "./types"
+import type { Img, Product, Redirect, Site } from "./types"
 
 const assets = import.meta.glob<{ default: ImageMetadata }>("../assets/media/*.webp", { eager: true })
 
@@ -11,11 +11,20 @@ export function localImage(name: string): Img {
   if (!mod) throw new Error(`görsel yok: ${name}`)
   return { src: mod.default }
 }
+const optional = (name: string | undefined): Img | undefined => (name ? localImage(name) : undefined)
 
 function fromFixture(): Site {
+  const { heroImage, aboutImage, ...settings } = content.settings
   // PB yalnız yayındaki sayfaları verir (published = true); fixture da aynısını yapar
   const pages = content.pages.filter((p) => p.published).map((p) => ({ title: p.title, slug: p.slug, body: p.body, seoDescription: p.seoDescription }))
-  return { settings: content.settings, posts: content.posts, redirects: content.redirects as Redirect[], pages }
+  const products: Product[] = content.products.map((p) => ({
+    id: p.id, kind: p.kind as Product["kind"], title: p.title, slug: p.slug, summary: p.summary, description: p.description,
+    images: p.images.map(localImage), price: p.price, stock: p.stock, eventDate: "eventDate" in p ? p.eventDate : undefined,
+  }))
+  return {
+    settings: { ...settings, heroImage: optional(heroImage), aboutImage: optional(aboutImage) },
+    posts: content.posts, redirects: content.redirects as Redirect[], pages, products,
+  }
 }
 
 let cache: Promise<Site> | undefined

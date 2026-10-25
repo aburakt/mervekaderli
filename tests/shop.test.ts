@@ -83,7 +83,7 @@ function backdate(p: Pb, number: string) {
 beforeAll(async () => {
   ;[pb, off, nokeys] = await Promise.all([
     startPb({ SHOPIER_API_KEY: KEY, SHOPIER_API_SECRET: SECRET, SHOP_NOTIFY_TO: "merve@magaza.test" }, { site: OVERRIDE, migrations: [MIGRATION] }),
-    startPb(),
+    startPb({}, { site: { SHOP: null } }),
     startPb({}, { site: { ...OVERRIDE, SHOP: { rateLimit: { max: 2, minutes: 10 } } }, migrations: [MIGRATION] }),
   ])
 }, 300_000)

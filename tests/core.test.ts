@@ -9,8 +9,9 @@ import { checkLock } from "../scripts/core-sync"
 const ROOT = join(import.meta.dir, "..")
 const site = require(join(ROOT, "pb", "pb_hooks", "site.js")) as { ID: string; CONTENT: string[]; RULES: Record<string, unknown>; FORMS?: string[] }
 const FORMS = site.FORMS ?? []
-// core'un kendi koleksiyonları (core migration'larıyla gelir): içerik değil, yayın tetiklemez, yalnız superuser okur
-const CORE_COLLECTIONS = ["audit_log"]
+// core'un kendi koleksiyonları (core migration'larıyla gelir): içerik değil, yayın tetiklemez, yalnız superuser okur.
+// orders: mağaza modülünün siparişleri (pb/shop, docs/shop.md); yalnız hook yazar, API'den kimse okuyamaz.
+const CORE_COLLECTIONS = ["audit_log", "orders"]
 
 type Field = { name: string; type: string; help: string; system: boolean; hidden: boolean; presentable: boolean }
 type Collection = {

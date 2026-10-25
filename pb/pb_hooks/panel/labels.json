@@ -19,6 +19,12 @@
     "messages.notes": "Notlar",
     "redirects.from": "Eski adres",
     "redirects.to": "Yeni adres",
-    "redirects.code": "Yönlendirme türü"
+    "redirects.code": "Yönlendirme türü",
+    "settings.instagram": "Instagram adresi",
+    "settings.hours": "Açık olduğu saatler",
+    "settings.about_title": "Stüdyo bölümü başlığı",
+    "settings.about_text": "Stüdyo bölümü metni",
+    "settings.about_image": "Stüdyo bölümü fotoğrafı",
+    "settings.workshop_intro": "Atölyeler giriş metni"
   }
 }

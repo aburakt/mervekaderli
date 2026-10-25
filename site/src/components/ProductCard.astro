@@ -1,0 +1,22 @@
+---
+import Photo from "./Photo.astro"
+import { price, stockNote } from "../lib/catalog"
+import type { Product } from "../lib/types"
+
+// Ürün kartı. level: kartın başlık düzeyi (sayfadaki üst başlığın bir altı).
+interface Props { product: Product; level?: 2 | 3; eager?: boolean }
+const { product: p, level = 3, eager = false } = Astro.props
+const H = `h${level}` as "h2" | "h3"
+const note = stockNote(p)
+---
+<a href={`/urunler/${p.slug}/`} class="product-card" data-product-id={p.id}>
+  <div class="shot">
+    {p.images[0] && <Photo img={p.images[0]} alt={p.title} sizes="(min-width: 1024px) 23vw, (min-width: 640px) 45vw, 92vw" width={800} loading={eager ? "eager" : "lazy"} />}
+    {note && <span class="badge" data-tone={note.tone} data-stock-badge>{note.label}</span>}
+  </div>
+  <div class="flex items-baseline justify-between gap-3">
+    <H>{p.title}</H>
+    <span class="price shrink-0">{price(p.price)}</span>
+  </div>
+  <p class="-mt-2 text-sm text-ink-soft">{p.summary}</p>
+</a>

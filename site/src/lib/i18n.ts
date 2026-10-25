@@ -6,7 +6,7 @@ export const LANGS = ["tr"] as const
 export type Lang = (typeof LANGS)[number]
 export const DEFAULT_LANG: Lang = "tr"
 /** Kayıt adresi (slug) olamayacak değerler: dil önekleri ve sitenin kendi yolları. */
-export const RESERVED_SLUGS = ["tr", "api", "_astro", "yazilar"] as const
+export const RESERVED_SLUGS = ["tr", "api", "_astro", "yazilar", "urunler", "atolyeler", "sepet", "siparis"] as const
 /** og:locale ve sitemap hreflang değerleri. */
 export const LOCALES: Record<Lang, { og: string; hreflang: string; name: string }> = {
   tr: { og: "tr_TR", hreflang: "tr", name: "Türkçe" },

@@ -60,7 +60,7 @@
     "site/src/lib/mail-logo.ts": "99e1552d04d3e89c5895a64bdab4971519fbfb5289f4fff7b3278769307c5d36",
     "site/src/lib/pb.ts": "7850b1e0ba1e87903e714e07f1c8ba58af0d68f064a0cb159e1195938bd0d36e",
     "site/src/lib/sanitize.ts": "f8f19ac4db956e23729a90db7d7368fc9395aa4b5380275d49b025bbcc5be874",
-    "site/src/lib/shop-config.ts": "34d148351ef67cd8f529b8878ddfea91ec3f6c08584758a934559d12ee9e2ebe",
+    "site/src/lib/shop-config.ts": "f50d7199e1cb85a04f9b22aba667b736e2f15c9ccfafb01ce8e9c9324e8a1d1b",
     "site/src/lib/shop.ts": "bb4779f251ec4c82904c68b62b9ee31ceeaeaa64b3637d260cc38a6ad1715e03",
     "site/src/lib/tr.ts": "f46440ba9f8c7d2fb04022b4e4817860f1cd946bfddd38529974dbea0bfb9d3a",
     "site/src/lib/webmcp.ts": "ee229fd4af6e58691f8138b2c69e25e8f2916f9c98197562a233bd27859eb997",
@@ -71,7 +71,7 @@
     "site/src/scripts/webmcp.ts": "aba577690fc84803d9abdd9e4581f57acdb654cd5fb1e7a8ca7a4fa5c3d836bf",
     "site/src/webmcp.d.ts": "ce13770fe9b9d65adc410a663fd522230d745ed0c89e19eed59c65ccffb7a520",
     "tests/a11y.test.ts": "d0c4ac261d81bd771b5ae9dcfba9a0e8565a11389e8594e85467645ce7d9a205",
-    "tests/core.test.ts": "d3aff91a31689a7522eba821a3e4e858faac641ec72dd730ed95fd8dcc5cfcd8",
+    "tests/core.test.ts": "7a016f9448b37f4ea6ca10c367885a489db74f0be11966b0c38e3b08bbde30e8",
     "tests/forms.test.ts": "5ddb25efd01f2a8dc0f7a8d999ea7cd807719bc688573e3811a260448544ef84",
     "tests/geo.test.ts": "5e14671a2eb06cbef7b2a0dea7eb22b7ce70e9dc2a356f271192b4a54bcb88d8",
     "tests/guard.test.ts": "b1fcb243554a553c4262a153d613f4d7bbf70f5768a7c1b90b559d3f01a656a7",
@@ -84,7 +84,7 @@
     "tests/panel.test.ts": "507bd420548d34fa82a43f5cb1ee5c16fb526ad1eeb45191f23a3232886b0a35",
     "tests/seed-remote.test.ts": "57cbd07b1f3291186e2f7109b681c6925226a511604f8f5513aa543a25b63846",
     "tests/shop-client.test.ts": "94101f841f22391e20f2b08d62a6fca0a863e142e13f1f944a6e8b1c0f01a230",
-    "tests/shop.test.ts": "78f370a5de063459303314b15a73533bcd0b946777753ed1032a62c2eb33c9d4",
+    "tests/shop.test.ts": "d3819440cd5c1f6f6e04874f3f3acfe38ca6820ce048e745f75e90b05daf883b",
     "tests/tr.test.ts": "407e1dbfdea93c281d9a8dbba6a4390682056687439b3fb6cbd913d066ec07a7",
     "tests/webmcp.test.ts": "8cf64b2b43394c86872cb2839e58b1fd393504cfa29eead73f960ef30d86ffc1"
   }

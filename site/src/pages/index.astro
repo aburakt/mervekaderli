@@ -1,35 +1,115 @@
 ---
 import ContactForm from "../components/ContactForm.astro"
 import Photo from "../components/Photo.astro"
+import ProductCard from "../components/ProductCard.astro"
+import Sprig from "../components/Sprig.astro"
+import WorkshopCard from "../components/WorkshopCard.astro"
 import Base from "../layouts/Base.astro"
+import { isUpcoming, isWorkshop } from "../lib/catalog"
 import { loadSite } from "../lib/content"
-import { formatDate } from "../lib/format"
+import { formatDate, lines, telHref } from "../lib/format"
 
-const { settings, posts } = await loadSite()
+const { settings: s, posts, products } = await loadSite()
+const items = products.filter((p) => !isWorkshop(p))
+// Önce satıştakiler; ana sayfada sekiz parça
+const featured = [...items.filter((p) => p.stock > 0), ...items.filter((p) => p.stock <= 0)].slice(0, 8)
+const workshops = products.filter((p) => isWorkshop(p) && isUpcoming(p)).slice(0, 3)
+const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.companyName} ${lines(s.address).join(" ")}`)}`
 ---
 <Base path="/">
-  <section class="wrap py-16 md:py-24">
-    <h1 class="text-[clamp(2.2rem,5vw,3.6rem)]">{settings.heroTitle}</h1>
-    {settings.heroText && <p class="lead mt-5">{settings.heroText}</p>}
-    {settings.heroImage && <Photo img={settings.heroImage} alt={settings.heroTitle} class="mt-10 w-full rounded-2xl" sizes="(min-width: 1152px) 1152px, 100vw" loading="eager" />}
+  <section class="wrap grid items-center gap-10 pb-16 pt-10 md:grid-cols-[1.1fr_0.9fr] md:gap-16 md:pb-24 md:pt-16">
+    <div>
+      <p class="eyebrow">El yapımı seramik · Ankara</p>
+      <h1 class="display mt-5">{s.heroTitle}</h1>
+      {s.heroText && <p class="lead mt-6">{s.heroText}</p>}
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="/urunler/" class="btn">Koleksiyonu keşfet</a>
+        <a href="/atolyeler/" class="btn-ghost">Atölyeye katıl</a>
+      </div>
+      <Sprig class="sprig mt-12 hidden md:block" />
+    </div>
+    {s.heroImage && (
+      <div class="arch mx-auto aspect-[4/5] w-full max-w-md md:max-w-none">
+        <Photo img={s.heroImage} alt="Stüdyonun Aurora serisinden bir abajur, sıcak ışıkla bir yatak odasında" sizes="(min-width: 768px) 40vw, 92vw" width={1200} loading="eager" />
+      </div>
+    )}
   </section>
 
-  <section id="yazilar" class="wrap pb-20">
-    <h2 class="text-2xl">Yazılar</h2>
-    <ul class="mt-6 grid gap-4 md:grid-cols-2">
-      {posts.map((p) => (
-        <li class="card p-6">
-          <time datetime={p.date} class="text-sm text-ink-soft">{formatDate(p.date)}</time>
-          <h3 class="mt-1 text-xl"><a href={`/yazilar/${p.slug}/`}>{p.title}</a></h3>
-          <p class="mt-2 text-ink-soft">{p.summary}</p>
-        </li>
-      ))}
+  <div class="marquee overflow-hidden py-4">
+    <p class="wrap flex flex-wrap justify-center gap-y-1 text-center"><span>Elde şekillenir</span><span>Elle boyanır</span><span>Her parça tek</span><span>Ankara'da üretilir</span></p>
+  </div>
+
+  <section class="wrap py-20 md:py-28" aria-labelledby="koleksiyon">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Koleksiyon</p>
+        <h2 id="koleksiyon" class="title-lg mt-3">Işıkla <em>canlanan</em> figürler</h2>
+      </div>
+      <a href="/urunler/" class="link-arrow">Tüm parçalar ({items.length}) →</a>
+    </div>
+    <ul class="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+      {featured.map((p) => <li><ProductCard product={p} /></li>)}
     </ul>
   </section>
 
-  <section id="iletisim" class="wrap pb-20">
-    <h2 class="text-2xl">İletişim</h2>
-    <p class="mt-2 text-ink-soft">Sorularınızı yazın, size dönüş yapalım.</p>
-    <div class="mt-6"><ContactForm /></div>
+  {workshops.length > 0 && (
+    <section class="night py-20 md:py-28" aria-labelledby="atolyeler">
+      <div class="wrap grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <p class="eyebrow">Atölyeler</p>
+          <h2 id="atolyeler" class="title-lg mt-3">Çamura <em>dokunmaya</em> gelin</h2>
+          {s.workshopIntro && <p class="lead mt-6">{s.workshopIntro}</p>}
+          <a href="/atolyeler/" class="btn-ghost mt-8">Tüm atölyeler</a>
+        </div>
+        <ul class="grid gap-4">
+          {workshops.map((w) => <li><WorkshopCard workshop={w} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section id="studyo" class="wrap grid items-center gap-12 py-20 md:grid-cols-2 md:gap-20 md:py-28" aria-labelledby="studyo-baslik">
+    {s.aboutImage && (
+      <div class="arch aspect-[4/5] w-full max-w-md justify-self-center md:order-2">
+        <Photo img={s.aboutImage} alt="Elle boyanmış kedi ve balık figürlerinin yakın çekimi" sizes="(min-width: 768px) 40vw, 92vw" width={1000} />
+      </div>
+    )}
+    <div>
+      <p class="eyebrow">Stüdyo</p>
+      <h2 id="studyo-baslik" class="title-lg mt-3">{s.aboutTitle}</h2>
+      <div class="mt-6 grid gap-4 text-ink-soft">{lines(s.aboutText).map((l) => <p>{l}</p>)}</div>
+      {s.instagram && <a href={s.instagram} class="link-arrow mt-8 inline-block" rel="noopener" target="_blank">Stüdyodan kareler: Instagram →</a>}
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section id="notlar" class="wrap pb-20" aria-labelledby="notlar-baslik">
+      <h2 id="notlar-baslik" class="title-lg">Stüdyodan notlar</h2>
+      <ul class="mt-8 grid gap-4 md:grid-cols-2">
+        {posts.map((p) => (
+          <li class="card p-6">
+            <time datetime={p.date} class="text-sm text-ink-soft">{formatDate(p.date)}</time>
+            <h3 class="mt-1 text-xl"><a href={`/yazilar/${p.slug}/`}>{p.title}</a></h3>
+            <p class="mt-2 text-ink-soft">{p.summary}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section id="ziyaret" class="wrap" aria-labelledby="ziyaret-baslik">
+    <div class="card grid gap-10 p-6 md:grid-cols-[0.85fr_1.15fr] md:p-12">
+      <div>
+        <p class="eyebrow">Ziyaret ve iletişim</p>
+        <h2 id="ziyaret-baslik" class="title-lg mt-3">Stüdyoya <em>uğrayın</em></h2>
+        <dl class="mt-8 grid gap-5">
+          <div><dt class="text-sm text-ink-soft">Adres</dt><dd class="mt-1">{lines(s.address).map((l) => <span class="block">{l}</span>)}<a href={mapUrl} rel="noopener" target="_blank" class="link-arrow mt-1 inline-block text-sm">Haritada aç →</a></dd></div>
+          {s.hours && <div><dt class="text-sm text-ink-soft">Açık</dt><dd class="mt-1">{s.hours}</dd></div>}
+          <div><dt class="text-sm text-ink-soft">Telefon ve e-posta</dt><dd class="mt-1 grid">{s.phone && <a href={telHref(s.phone)}>{s.phone}</a>}{s.email && <a href={`mailto:${s.email}`}>{s.email}</a>}</dd></div>
+        </dl>
+        <p class="mt-8 text-sm text-ink-soft">Kişiye özel sipariş, kurumsal hediye ve grup atölyeleri için yazın; size dönelim.</p>
+      </div>
+      <ContactForm />
+    </div>
   </section>
 </Base>

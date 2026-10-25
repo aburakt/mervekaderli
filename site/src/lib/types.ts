@@ -6,6 +6,7 @@ export type Settings = {
   heroTitle: string; heroText: string; heroImage?: Img; seoDescription: string; shareImage?: Img
   /** Cloudflare Web Analytics anahtarı; boşsa sayaç eklenmez. */
   cfAnalyticsToken?: string
+  instagram: string; hours: string; aboutTitle: string; aboutText: string; aboutImage?: Img; workshopIntro: string
 }
 /** Yazı (PB `posts`). `body` panel editöründen gelen HTML. `updated`: son düzenleme (PB `updated`; fixture'da yok), JSON-LD dateModified. */
 export type Post = { title: string; slug: string; date: string; summary: string; body: string; cover?: Img; updated?: string }
@@ -16,4 +17,13 @@ export type Redirect = { from: string; to: string; code: "301" | "302" }
 /** Sayfa (PB `pages`): yasal metinler gibi tek metinlik sayfa, /<slug>/ adresinde. Yalnız yayındakiler gelir. */
 export type Page = { title: string; slug: string; body: string; seoDescription: string }
 
-export type Site = { settings: Settings; posts: Post[]; redirects: Redirect[]; pages: Page[] }
+/**
+ * Ürün ya da atölye (PB `products`, mağaza modülü). Fiyat ve stok build anındakidir; sayfa tarayıcıda canlı stokla
+ * tazelenir (scripts/shop-ui.ts). `eventDate`: atölyenin ISO tarihi (UTC), yoksa tarih birlikte belirlenir.
+ */
+export type Product = {
+  id: string; kind: "product" | "workshop"; title: string; slug: string; summary: string; description: string
+  images: Img[]; price: number; stock: number; eventDate?: string
+}
+
+export type Site = { settings: Settings; posts: Post[]; redirects: Redirect[]; pages: Page[]; products: Product[] }

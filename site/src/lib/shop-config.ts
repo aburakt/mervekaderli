@@ -3,8 +3,7 @@
 // Mağaza ayarları build'de (docs/shop.md): site.js SHOP okunur, sayfaya mağaza adresleri data-* olarak yazılır.
 // Tarayıcı tarafı lib/shop.ts shopApi() bu öznitelikleri okur. Önizlemede (CONTENT_SOURCE=fixture) PB yok:
 // shopAttrs() boş döner, sepet görünür ama ödeme kapalıdır (shopEnabled() false).
-import { readFileSync } from "node:fs"
-import { fileURLToPath } from "node:url"
+import SITE_JS from "../../../pb/pb_hooks/site.js?raw"
 import { isFixtureMode, pbUrl } from "./pb"
 
 export type ShopSettings = {
@@ -16,13 +15,13 @@ export type ShopSettings = {
 
 type SiteJs = { ID: string; SHOP?: Partial<ShopSettings> | null }
 
-const SITE_JS = fileURLToPath(new URL("../../../pb/pb_hooks/site.js", import.meta.url))
+// site.js metni build'de pakete girer (?raw): sayfa kodu paketlendikten sonra dosya yolu tutmaz.
 // pb/pb_hooks/lib/shop.js DEFAULTS ile aynı
 const DEFAULTS: ShopSettings = { provider: "shopier", reserveMinutes: 30, shipping: { price: 0, freeOver: 0 }, returnPath: "/siparis/" }
 
 function siteJs(): SiteJs {
   const mod: { exports: SiteJs } = { exports: { ID: "" } }
-  new Function("module", "exports", readFileSync(SITE_JS, "utf8"))(mod, mod.exports)
+  new Function("module", "exports", SITE_JS)(mod, mod.exports)
   return mod.exports
 }
 

@@ -1,42 +1,155 @@
 @import "tailwindcss";
+@import "@fontsource-variable/fraunces/index.css";
+@import "@fontsource-variable/fraunces/wght-italic.css";
+@import "@fontsource-variable/instrument-sans/index.css";
 
 /*
- * Template'in sade başlangıç teması. Yeni sitede sektöre uygun tasarımla değiştirilir (ne simsiyah ne bembeyaz).
+ * Merve Kaderli Ceramic Studio: sırlı seramiğin sıcak tonları. Krem zemin (pişmemiş kil), kiremit vurgu (figürlerdeki
+ * kırmızı dudaklar), adaçayı yeşili (çiçek motifleri), koyu zeytin bölümler. Ne bembeyaz ne simsiyah.
+ * Başlık Fraunces (yumuşak, el yapımı hissi veren serif), metin Instrument Sans.
  * Tek sabit tema: koyu moda otomatik geçiş yok. CSP style-src 'self': stil yalnız bu dosyada, style= özniteliği kullanılmaz.
+ * Renkler pb/pb_hooks/site.js BRAND ile aynı (color = clay, ink, paper = canvas).
  */
 @theme {
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --color-canvas: #f6f5f1;
-  --color-paper: #ffffff;
-  --color-line: #e2dfd6;
-  --color-ink: #1f2124;
-  --color-ink-soft: #5d6066;
-  --color-accent: #2f5d50;
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --color-canvas: #f4ede2;
+  --color-paper: #fbf7f0;
+  --color-sand: #eadcc8;
+  --color-line: #ddcdb8;
+  --color-ink: #2b211c;
+  --color-ink-soft: #6a5649;
+  --color-clay: #a4472b;
+  --color-clay-deep: #833820;
+  --color-sage: #56664a;
+  --color-olive: #2f3627;
+  --color-cream: #efe5d3;
 }
 
 @layer base {
   :root { color-scheme: light; }
   body { font-family: var(--font-sans); color: var(--color-ink); background: var(--color-canvas); line-height: 1.65; -webkit-font-smoothing: antialiased; }
-  h1, h2, h3 { font-weight: 650; line-height: 1.15; text-wrap: balance; }
-  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
-  a { color: var(--color-accent); text-underline-offset: 0.22em; }
-  p, li, h1, h2, h3, a, address { overflow-wrap: anywhere; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 420; line-height: 1.08; letter-spacing: -0.015em; text-wrap: balance; }
+  h1 em, h2 em { font-style: italic; font-weight: 360; color: var(--color-clay); }
+  :focus-visible { outline: 2px solid var(--color-clay); outline-offset: 3px; }
+  a { color: var(--color-clay-deep); text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
+  p, li, h1, h2, h3, a, address, dd { overflow-wrap: anywhere; }
+  ::selection { background: var(--color-sand); }
 }
 
 @layer components {
-  .wrap { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
+  .wrap { margin-inline: auto; width: 100%; max-width: 76rem; padding-inline: 1.25rem; }
   @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
-  .lead { font-size: 1.1rem; color: var(--color-ink-soft); max-width: 60ch; }
-  .card { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: 1rem; }
+  .lead { font-size: 1.12rem; color: var(--color-ink-soft); max-width: 58ch; }
+  .eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-sage); }
+  .display { font-size: clamp(2.5rem, 6.4vw, 5rem); }
+  .title-lg { font-size: clamp(2rem, 4.4vw, 3.2rem); }
+  .soft { color: var(--color-ink-soft); }
+  .card { background: var(--color-paper); border: 1px solid var(--color-line); border-radius: 1.25rem; }
+
+  /* Üst bant ve menü */
+  .topbar { background: var(--color-olive); color: var(--color-cream); font-size: 0.8rem; text-align: center; padding: 0.45rem 1rem; }
+  .site-header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--color-canvas) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--color-line); }
+  .wordmark { display: inline-flex; flex-direction: column; line-height: 1; color: var(--color-ink); text-decoration: none; }
+  .wordmark b { font-family: var(--font-display); font-weight: 450; font-size: 1.45rem; letter-spacing: -0.01em; }
+  .wordmark small { margin-top: 0.3rem; font-size: 0.62rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-ink-soft); }
+  .nav a { color: var(--color-ink); text-decoration: none; font-size: 0.95rem; }
+  .nav a:hover, .nav a[aria-current="page"] { color: var(--color-clay); }
+  .cart-link { position: relative; display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--color-line); background: var(--color-paper); border-radius: 999px; padding: 0.45rem 0.9rem; color: var(--color-ink); text-decoration: none; font-size: 0.9rem; }
+  .cart-link:hover { border-color: var(--color-clay); }
+  .cart-count { min-width: 1.35rem; height: 1.35rem; border-radius: 999px; background: var(--color-clay); color: var(--color-paper); font-size: 0.72rem; font-weight: 700; display: inline-grid; place-items: center; padding-inline: 0.3rem; }
+  .cart-count[data-empty] { background: var(--color-sand); color: var(--color-ink-soft); }
+
+  /* Düğmeler */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--color-clay); color: var(--color-paper); border-radius: 999px; padding: 0.8rem 1.6rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: background 0.2s; border: 0; font: inherit; font-weight: 600; }
+  .btn:hover { background: var(--color-clay-deep); }
+  .btn:disabled { background: var(--color-sand); color: var(--color-ink-soft); cursor: not-allowed; }
+  .btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--color-ink); color: var(--color-ink); border-radius: 999px; padding: 0.75rem 1.5rem; font-weight: 600; text-decoration: none; }
+  .btn-ghost:hover { background: var(--color-ink); color: var(--color-canvas); }
+  .link-arrow { font-weight: 600; text-decoration: none; color: var(--color-clay-deep); }
+  .link-arrow:hover { text-decoration: underline; }
+
+  /* Kemer biçimli görsel: vazo ağzı ve fırın kapısı */
+  .arch { border-radius: 999px 999px 1.5rem 1.5rem; overflow: hidden; background: var(--color-sand); }
+  .arch img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Ürün kartı */
+  .product-card { display: flex; flex-direction: column; gap: 0.85rem; text-decoration: none; color: inherit; }
+  .product-card .shot { position: relative; aspect-ratio: 4 / 5; border-radius: 1.25rem; overflow: hidden; background: var(--color-sand); }
+  .product-card .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.2,.7,.2,1); }
+  .product-card:hover .shot img { transform: scale(1.04); }
+  .product-card h3 { font-size: 1.3rem; }
+  .product-card:hover h3 { color: var(--color-clay); }
+  .price { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .badge { position: absolute; top: 0.8rem; left: 0.8rem; background: var(--color-paper); color: var(--color-ink); border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.3rem 0.7rem; }
+  .badge[data-tone="last"] { background: var(--color-clay); color: var(--color-paper); }
+
+  /* Koyu bölüm (atölyeler) */
+  .night { background: var(--color-olive); color: var(--color-cream); }
+  .night h2, .night h3 { color: var(--color-paper); }
+  .night h2 em { color: #e3a78a; }
+  .night .eyebrow { color: #b9c7a3; }
+  .night .lead, .night .soft { color: #cfc4b1; }
+  .night .btn-ghost { border-color: var(--color-cream); color: var(--color-cream); }
+  .night .btn-ghost:hover { background: var(--color-cream); color: var(--color-olive); }
+  .night a:not(.btn):not(.btn-ghost) { color: #f0c3ab; }
+
+  /* Atölye kartı */
+  .workshop { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: start; padding: 1.5rem; border-radius: 1.25rem; border: 1px solid var(--color-line); background: var(--color-paper); }
+  .night .workshop { background: color-mix(in srgb, var(--color-paper) 6%, transparent); border-color: color-mix(in srgb, var(--color-cream) 18%, transparent); }
+  .datebox { width: 4.6rem; text-align: center; border-radius: 999px 999px 0.9rem 0.9rem; padding: 0.9rem 0.3rem 0.7rem; background: var(--color-clay); color: var(--color-paper); line-height: 1.05; }
+  .datebox b { display: block; font-family: var(--font-display); font-size: 1.9rem; font-weight: 450; }
+  .datebox span { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.25rem; }
+  .datebox[data-open] { background: var(--color-sage); }
+  .datebox[data-open] b { font-size: 1.3rem; }
+
+  /* Galeri */
+  .gallery-main { aspect-ratio: 1; border-radius: 1.5rem; overflow: hidden; background: var(--color-sand); }
+  .gallery-main img { width: 100%; height: 100%; object-fit: cover; }
+  .thumbs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; }
+  .thumbs button { aspect-ratio: 1; border-radius: 0.8rem; overflow: hidden; border: 2px solid transparent; padding: 0; cursor: pointer; background: var(--color-sand); }
+  .thumbs button[aria-current="true"] { border-color: var(--color-clay); }
+  .thumbs img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* Adet seçici */
+  .qty { display: inline-flex; align-items: center; border: 1px solid var(--color-line); border-radius: 999px; background: var(--color-paper); }
+  .qty button { width: 2.4rem; height: 2.4rem; font-size: 1.1rem; cursor: pointer; color: var(--color-ink); background: none; border: 0; }
+  .qty button:disabled { color: var(--color-line); cursor: default; }
+  .qty output { min-width: 2rem; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  /* Sepet */
+  .cart-line { display: grid; grid-template-columns: 5rem 1fr auto; gap: 1rem; align-items: center; padding-block: 1rem; border-bottom: 1px solid var(--color-line); }
+  .cart-line img, .cart-line .ph { width: 5rem; height: 5rem; border-radius: 0.9rem; object-fit: cover; background: var(--color-sand); }
+  .summary-row { display: flex; justify-content: space-between; gap: 1rem; padding-block: 0.35rem; font-variant-numeric: tabular-nums; }
+  .summary-row[data-total] { border-top: 1px solid var(--color-line); margin-top: 0.4rem; padding-top: 0.8rem; font-weight: 700; font-size: 1.1rem; }
+  .note { border-radius: 1rem; background: var(--color-sand); padding: 0.9rem 1.1rem; font-size: 0.92rem; }
+  .note[data-tone="error"] { background: #f4d9cf; color: #6d2513; }
+
+  /* Metin gövdesi (ürün açıklaması, yasal sayfalar) */
   .prose-body > * + * { margin-top: 1em; }
   .prose-body h2 { font-size: 1.5rem; margin-top: 1.6em; }
-  .prose-body ul { list-style: disc; padding-left: 1.4rem; }
+  .prose-body ul { list-style: none; padding-left: 0; }
+  .prose-body ul li { position: relative; padding-left: 1.3rem; }
+  .prose-body ul li + li { margin-top: 0.35rem; }
+  .prose-body ul li::before { content: ""; position: absolute; left: 0.1rem; top: 0.68em; width: 0.45rem; height: 0.45rem; border-radius: 999px; background: var(--color-clay); }
   .prose-body ol { list-style: decimal; padding-left: 1.4rem; }
-  .field { display: grid; gap: 0.35rem; font-size: 0.95rem; }
-  .field input, .field textarea { width: 100%; border: 1px solid var(--color-line); border-radius: 0.5rem; padding: 0.6rem 0.75rem; background: var(--color-paper); font: inherit; }
-  .btn { background: var(--color-accent); color: #fff; border-radius: 0.5rem; padding: 0.6rem 1.4rem; font-weight: 600; cursor: pointer; }
-  .btn:disabled { opacity: 0.6; cursor: wait; }
+
+  /* Form */
+  .field { display: grid; gap: 0.35rem; font-size: 0.92rem; font-weight: 500; }
+  .field input, .field textarea, .field select { width: 100%; border: 1px solid var(--color-line); border-radius: 0.8rem; padding: 0.7rem 0.85rem; background: var(--color-paper); font: inherit; font-weight: 400; color: var(--color-ink); }
+  .field input:focus, .field textarea:focus { border-color: var(--color-clay); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-clay) 18%, transparent); }
+  .check { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; }
+  .check input { margin-top: 0.3rem; accent-color: var(--color-clay); width: 1rem; height: 1rem; flex: none; }
   /* spam tuzağı: ekranda ve ekran okuyucuda yok, botlar doldurur */
   .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-  .fixture-banner { background: #fff4d6; border-bottom: 1px solid #ecd9a0; font-size: 0.85rem; text-align: center; padding: 0.4rem 1rem; }
+  .fixture-banner { background: #f6e3b4; border-bottom: 1px solid #e4c983; font-size: 0.85rem; text-align: center; padding: 0.4rem 1rem; }
+
+  /* Süs: el çizimi dal */
+  .sprig { color: var(--color-sage); width: 5.5rem; height: auto; }
+  .marquee { border-block: 1px solid var(--color-line); font-family: var(--font-display); font-style: italic; font-size: clamp(1.1rem, 2.2vw, 1.5rem); color: var(--color-ink-soft); }
+  .marquee span + span::before { content: "✦"; font-style: normal; font-size: 0.7em; color: var(--color-clay); margin-inline: 1.1rem; vertical-align: 0.15em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card .shot img { transition: none; }
 }

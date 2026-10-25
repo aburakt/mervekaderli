@@ -1,42 +1,28 @@
 {
   "settings": {
-    "companyName": "Örnek Kurum",
-    "phone": "0 312 000 00 00",
-    "email": "info@ornek.com.tr",
-    "address": "Örnek Mah. 1. Cad. No: 1\nÇankaya / Ankara",
-    "heroTitle": "Astro ve PocketBase ile hızlı, panelden yönetilen site",
-    "heroText": "Bu sayfa template'in örnek içeriğidir. Yeni sitede şema, içerik ve tasarım değiştirilir.",
-    "seoDescription": "Örnek Kurum: template'in örnek ana sayfası."
+    "companyName": "Merve Kaderli Ceramic Studio",
+    "phone": "0530 850 28 94",
+    "email": "mervekaderliceramic@gmail.com",
+    "address": "100. Yıl Mah. Hatır Sk. No: 11/2\n06668 Çankaya / Ankara",
+    "heroTitle": "Topraktan, elde; ışığa dönüşen parçalar",
+    "heroText": "Ankara'daki stüdyomuzda her parçayı tek tek şekillendirip elle boyuyoruz. Koleksiyondan seçin ya da atölyeye gelip kendi parçanızı yapın.",
+    "heroImage": "hero.webp",
+    "seoDescription": "Merve Kaderli Ceramic Studio: Ankara Çankaya'da el yapımı seramik abajur, vazo ve aplikler; çark, el şekillendirme ve boyama atölyeleri.",
+    "instagram": "https://www.instagram.com/mervekaderliceramicstudio/",
+    "hours": "Her gün 10.00 – 18.00",
+    "aboutTitle": "Tasarım odaklı, doğadan ilham alan bir stüdyo",
+    "aboutText": "Merve Kaderli Ceramic Studio; kişiye özel parçalar, butik koleksiyonlar, atölyeler ve kurumsal iş birlikleri üreten tasarım odaklı bir seramik stüdyosu. Figürlerimiz doğanın mistik ve estetik dokusundan besleniyor: ejderhalar, sakura dalları, yabani hayvanlar ve kırmızı dudaklı kadın yüzleri.\nHer parça elde şekillenir, elle boyanır ve yüksek ısıda pişirilir. Bu yüzden iki parça hiçbir zaman birebir aynı olmaz; aldığınız parça yalnız size aittir.",
+    "aboutImage": "studyo.webp",
+    "workshopIntro": "Çamura dokunmak için deneyim gerekmez. Küçük gruplarla, sabırla ve keyifle çalışıyoruz; malzeme, sır ve fırınlama ücrete dahil. Parçalarınız piştikten sonra stüdyodan teslim alırsınız."
   },
-  "posts": [
-    {
-      "title": "Örnek yazı",
-      "slug": "ornek-yazi",
-      "date": "2026-10-01",
-      "summary": "Panelden yazılan, Cloudflare Pages'e yeniden yayınla gelen ilk yazı.",
-      "body": "<p>Yazının metni panelin zengin metin düzenleyicisinden gelir ve build'de temizlenir.</p>"
-    },
-    {
-      "title": "İkinci yazı",
-      "slug": "ikinci-yazi",
-      "date": "2026-09-15",
-      "summary": "Türkçe karakterli başlıktan adres kendiliğinden üretilir.",
-      "body": "<p>İkinci yazının metni.</p>"
-    }
-  ],
-  "redirects": [
-    {
-      "from": "/eski-yazi",
-      "to": "/yazilar/ornek-yazi/",
-      "code": "301"
-    }
-  ],
+  "posts": [],
+  "redirects": [],
   "pages": [
     {
       "title": "KVKK Aydınlatma Metni",
       "slug": "kvkk-aydinlatma-metni",
       "seoDescription": "Kişisel verilerin korunması hakkında aydınlatma metni.",
-      "body": "<p><strong>Taslak metin, gözden geçirilmeli:</strong> Bu metin template ile gelen genel bir örnektir. Yayına almadan önce kurumunuzun hukuk ya da KVKK danışmanı tarafından kurumun gerçek veri işleme faaliyetlerine göre düzenlenmeli, köşeli parantez içindeki yerler doldurulmalıdır.</p><h2>Veri sorumlusu</h2>\n<p>6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") uyarınca kişisel verileriniz, veri sorumlusu sıfatıyla [Ticari unvan] (\"Kurum\") tarafından, aşağıda açıklanan kapsamda işlenmektedir. Adres: [Açık adres]. E-posta: [E-posta adresi].</p>\n<h2>İşlenen kişisel veriler</h2>\n<ul>\n<li>Kimlik ve iletişim bilgileri (ad soyad, telefon, e-posta): bizimle telefon, e-posta ya da WhatsApp ile iletişime geçtiğinizde paylaştığınız kadarıyla.</li>\n<li>İşlem güvenliği bilgileri (IP adresi, tarayıcı bilgisi, ziyaret zamanı): sitenin barındırıldığı altyapının güvenlik kayıtlarında.</li>\n<li>[Kurumun işlediği diğer veri kategorileri]</li>\n</ul>\n<h2>İşleme amaçları ve hukuki sebepler</h2>\n<p>Kişisel verileriniz; taleplerinize cevap verilmesi, hizmetlerimize ilişkin bilgi verilmesi, sitenin güvenliğinin sağlanması ve yasal yükümlülüklerin yerine getirilmesi amaçlarıyla, KVKK'nın 5. maddesindeki bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması, veri sorumlusunun hukuki yükümlülüğü ve meşru menfaati hukuki sebeplerine dayanılarak işlenir.</p>\n<h2>Toplama yöntemi</h2>\n<p>Veriler; site, e-posta, telefon ve yüz yüze görüşmeler aracılığıyla, otomatik ya da kısmen otomatik yollarla toplanır.</p>\n<h2>Aktarım</h2>\n<p>Kişisel verileriniz yalnız yukarıdaki amaçlarla sınırlı olarak, hizmet aldığımız barındırma ve altyapı sağlayıcılarına [yurt içi/yurt dışı sağlayıcılar] ve talep hâlinde yetkili kamu kurumlarına aktarılabilir.</p>\n<h2>Haklarınız</h2>\n<p>KVKK'nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmişse düzeltilmesini, şartları oluşmuşsa silinmesini veya yok edilmesini isteme, bu işlemlerin aktarılan üçüncü kişilere bildirilmesini isteme, münhasıran otomatik sistemlerle analiz sonucu aleyhinize bir sonuç çıkmasına itiraz etme ve kanuna aykırı işleme nedeniyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.</p>\n<p>Başvurularınızı [E-posta adresi] adresine ya da [Açık adres] adresine yazılı olarak iletebilirsiniz. Başvurular en geç otuz gün içinde ücretsiz olarak sonuçlandırılır.</p>",
+      "body": "<p><strong>Taslak metin, gözden geçirilmeli:</strong> Bu metin template ile gelen genel bir örnektir. Yayına almadan önce kurumunuzun hukuk ya da KVKK danışmanı tarafından kurumun gerçek veri işleme faaliyetlerine göre düzenlenmeli, köşeli parantez içindeki yerler doldurulmalıdır.</p><h2>Veri sorumlusu</h2>\n<p>6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") uyarınca kişisel verileriniz, veri sorumlusu sıfatıyla [Ticari unvan] (\"Kurum\") tarafından, aşağıda açıklanan kapsamda işlenmektedir. Adres: [Açık adres]. E-posta: [E-posta adresi].</p>\n<h2>İşlenen kişisel veriler</h2>\n<ul>\n<li>Kimlik ve iletişim bilgileri (ad soyad, telefon, e-posta): sipariş verdiğinizde, atölyeye kaydolduğunuzda ya da bizimle iletişime geçtiğinizde paylaştığınız kadarıyla.</li>\n<li>Teslimat ve fatura bilgileri (adres, il/ilçe, posta kodu): yalnız kargoyla gönderilen siparişlerde.</li>\n<li>Sipariş bilgileri (sipariş numarası, ürünler, tutar, ödeme durumu). Kart bilgileriniz bize ulaşmaz; ödeme Shopier'in güvenli ödeme sayfasında alınır.</li>\n<li>İşlem güvenliği bilgileri (IP adresi, tarayıcı bilgisi, ziyaret zamanı): sitenin barındırıldığı altyapının güvenlik kayıtlarında.</li>\n<li>[Kurumun işlediği diğer veri kategorileri]</li>\n</ul>\n<h2>İşleme amaçları ve hukuki sebepler</h2>\n<p>Kişisel verileriniz; taleplerinize cevap verilmesi, hizmetlerimize ilişkin bilgi verilmesi, sitenin güvenliğinin sağlanması ve yasal yükümlülüklerin yerine getirilmesi amaçlarıyla, KVKK'nın 5. maddesindeki bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması, veri sorumlusunun hukuki yükümlülüğü ve meşru menfaati hukuki sebeplerine dayanılarak işlenir.</p>\n<h2>Toplama yöntemi</h2>\n<p>Veriler; site, e-posta, telefon ve yüz yüze görüşmeler aracılığıyla, otomatik ya da kısmen otomatik yollarla toplanır.</p>\n<h2>Aktarım</h2>\n<p>Kişisel verileriniz yalnız yukarıdaki amaçlarla sınırlı olarak, hizmet aldığımız barındırma ve altyapı sağlayıcılarına (ödeme için Shopier, teslimat için kargo firması, barındırma için altyapı sağlayıcıları) ve talep hâlinde yetkili kamu kurumlarına aktarılabilir.</p>\n<h2>Haklarınız</h2>\n<p>KVKK'nın 11. maddesi uyarınca; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, aktarıldığı üçüncü kişileri bilme, eksik veya yanlış işlenmişse düzeltilmesini, şartları oluşmuşsa silinmesini veya yok edilmesini isteme, bu işlemlerin aktarılan üçüncü kişilere bildirilmesini isteme, münhasıran otomatik sistemlerle analiz sonucu aleyhinize bir sonuç çıkmasına itiraz etme ve kanuna aykırı işleme nedeniyle zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.</p>\n<p>Başvurularınızı [E-posta adresi] adresine ya da [Açık adres] adresine yazılı olarak iletebilirsiniz. Başvurular en geç otuz gün içinde ücretsiz olarak sonuçlandırılır.</p>",
       "published": true
     },
     {
@@ -45,6 +31,296 @@
       "seoDescription": "Sitenin gizlilik ve çerez politikası.",
       "body": "<p><strong>Taslak metin, gözden geçirilmeli:</strong> Bu metin template ile gelen genel bir örnektir. Yayına almadan önce kurumunuzun hukuk ya da KVKK danışmanı tarafından kurumun gerçek veri işleme faaliyetlerine göre düzenlenmeli, köşeli parantez içindeki yerler doldurulmalıdır.</p><h2>Genel</h2>\n<p>Bu politika, [Ticari unvan] tarafından işletilen bu sitenin ziyaretçilerine ilişkin bilgilerin nasıl ele alındığını açıklar. Kişisel verilerin işlenmesine ilişkin ayrıntılı bilgi KVKK Aydınlatma Metni'ndedir.</p>\n<h2>Çerezler</h2>\n<p>Bu site reklam ya da takip çerezi kullanmaz ve ziyaretçi profili oluşturmaz. Site statik sayfalardan oluşur; ziyaretinizde tarayıcınıza çerez yazılmaz. [Sonradan çerez kullanan bir hizmet eklenirse burada adı, amacı ve süresiyle belirtilmelidir.]</p>\n<h2>Ziyaret istatistikleri</h2>\n<p>Sitenin hangi sayfalarının ne kadar ziyaret edildiğini anlamak için çerez kullanmayan, ziyaretçiyi tanımlamayan Cloudflare Web Analytics kullanılabilir. Bu hizmet IP adresini ve tarayıcı parmak izini kullanıcı takibi için kullanmaz; yalnız toplu sayfa görüntüleme ve performans ölçümleri tutar.</p>\n<h2>Bağlantılar ve üçüncü taraf hizmetler</h2>\n<p>Sitede başka sitelere (ör. harita, sosyal medya) bağlantılar bulunabilir. Bu sitelerin kendi gizlilik politikaları geçerlidir.</p>\n<h2>Güvenlik</h2>\n<p>Site yalnız şifreli bağlantı (HTTPS) üzerinden yayınlanır ve güvenlik başlıklarıyla korunur.</p>\n<h2>Değişiklikler ve iletişim</h2>\n<p>Bu politika gerektiğinde güncellenir; güncel hâli bu sayfadadır. Sorularınız için: [E-posta adresi].</p>",
       "published": true
+    },
+    {
+      "title": "Ön Bilgilendirme Formu",
+      "slug": "on-bilgilendirme-formu",
+      "seoDescription": "Mesafeli satışlarda sipariş öncesi ön bilgilendirme formu.",
+      "published": true,
+      "body": "<p><strong>Taslak metin, gözden geçirilmeli:</strong> Bu metin genel bir örnektir. Yayına almadan önce muhasebeci ya da hukuk danışmanı tarafından gözden geçirilmeli, köşeli parantez içindeki yerler doldurulmalıdır.</p><h2>Satıcı</h2><p>Unvan: [Ticari unvan]<br>Adres: 100. Yıl Mah. Hatır Sk. No: 11/2, 06668 Çankaya / Ankara<br>Telefon: 0530 850 28 94<br>E-posta: mervekaderliceramic@gmail.com<br>Vergi dairesi / no: [Vergi dairesi ve numarası]</p><h2>Ürün ve fiyat</h2><p>Siparişinizdeki ürünlerin adı, adedi, KDV dahil satış fiyatı ve kargo ücreti ödeme adımında ve sipariş onay e-postasında gösterilir.</p><h2>Ödeme ve teslimat</h2><p>Ödeme, Shopier güvenli ödeme sayfasında kredi ya da banka kartıyla alınır. Ürünler ödeme onayından sonra en geç [3] iş günü içinde kargoya verilir; el yapımı ve siparişe özel üretilen parçalarda süre ürün sayfasında belirtilir. Atölye kayıtlarında teslimat yoktur; atölye, ürün sayfasında yazan tarih ve saatte stüdyoda yapılır.</p><h2>Cayma hakkı</h2><p>Ürünü teslim aldığınız günden itibaren 14 gün içinde gerekçe göstermeden cayma hakkınızı kullanabilirsiniz. Kişiye özel üretilen ürünlerde ve belirli bir tarihte yapılan atölye ve etkinlik hizmetlerinde cayma hakkı yoktur (Mesafeli Sözleşmeler Yönetmeliği md. 15). Ayrıntılar İptal, İade ve Değişim sayfasındadır.</p><h2>Şikâyet ve itiraz</h2><p>Şikâyetlerinizi yukarıdaki iletişim bilgilerine iletebilir, yasal sınırlar içinde Tüketici Hakem Heyetine ya da Tüketici Mahkemesine başvurabilirsiniz.</p>"
+    },
+    {
+      "title": "Mesafeli Satış Sözleşmesi",
+      "slug": "mesafeli-satis-sozlesmesi",
+      "seoDescription": "Sitedeki siparişlere uygulanan mesafeli satış sözleşmesi.",
+      "published": true,
+      "body": "<p><strong>Taslak metin, gözden geçirilmeli:</strong> Bu metin genel bir örnektir. Yayına almadan önce muhasebeci ya da hukuk danışmanı tarafından gözden geçirilmeli, köşeli parantez içindeki yerler doldurulmalıdır.</p><h2>Taraflar</h2><p>Bu sözleşme, aşağıda bilgileri yer alan satıcı ile siteden sipariş veren alıcı arasında, siparişin onaylandığı anda kurulur.</p><h2>Satıcı</h2><p>Unvan: [Ticari unvan]<br>Adres: 100. Yıl Mah. Hatır Sk. No: 11/2, 06668 Çankaya / Ankara<br>Telefon: 0530 850 28 94<br>E-posta: mervekaderliceramic@gmail.com<br>Vergi dairesi / no: [Vergi dairesi ve numarası]</p><h2>Konu</h2><p>Sözleşmenin konusu, alıcının siteden elektronik ortamda sipariş verdiği ürün ya da atölye hizmetinin satışı ve teslimidir; taraflar 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği hükümlerine tabidir.</p><h2>Sipariş, ödeme ve teslimat</h2><p>Ürünlerin adı, adedi, KDV dahil fiyatı, kargo ücreti ve toplam tutar sipariş onay e-postasında yer alır. Ödeme Shopier aracılığıyla alınır. Ürün, alıcının bildirdiği adrese kargoyla teslim edilir; teslimat süresi yasal 30 günlük süreyi aşamaz.</p><h2>Cayma hakkı ve istisnalar</h2><p>Alıcı, teslimden itibaren 14 gün içinde cayma hakkını kullanabilir. Kişiye özel hazırlanan ürünlerde ve belirli bir tarihte yapılacak atölye hizmetlerinde cayma hakkı kullanılamaz. Cayma hâlinde bedel, bildirimden itibaren 14 gün içinde ödemenin yapıldığı yolla iade edilir.</p><h2>Uyuşmazlık</h2><p>Uyuşmazlıklarda, Ticaret Bakanlığınca ilan edilen parasal sınırlar içinde Tüketici Hakem Heyetleri, aşan durumlarda Tüketici Mahkemeleri yetkilidir.</p>"
+    },
+    {
+      "title": "İptal, İade ve Değişim",
+      "slug": "iptal-iade-ve-degisim",
+      "seoDescription": "Siparişlerde iptal, iade ve değişim koşulları.",
+      "published": true,
+      "body": "<p><strong>Taslak metin, gözden geçirilmeli:</strong> Bu metin genel bir örnektir. Yayına almadan önce muhasebeci ya da hukuk danışmanı tarafından gözden geçirilmeli, köşeli parantez içindeki yerler doldurulmalıdır.</p><h2>Ürünler</h2><p>Ürünü teslim aldığınız günden itibaren 14 gün içinde iade edebilirsiniz. İade için önce bize e-posta ya da telefonla sipariş numaranızı bildirin; ürünü kullanılmamış ve özenle paketlenmiş olarak gönderin. Ödemeniz ürün bize ulaştıktan sonra en geç 14 gün içinde kartınıza iade edilir.</p><h2>Kırık ya da hasarlı teslimat</h2><p>Seramik kırılgandır; kargoyu teslim alırken paketi kontrol edin. Hasar varsa kargo görevlisine tutanak tutturun ve 2 gün içinde fotoğraflarıyla bize yazın; ürünü yeniler ya da bedelini iade ederiz.</p><h2>Atölyeler</h2><p>Atölye tarihinden [3] gün öncesine kadar yaptığınız iptallerde ücret iade edilir ya da başka bir atölyeye aktarılır. Daha geç iptallerde ücret iade edilmez; yerinize başka birini gönderebilirsiniz.</p><h2>Kişiye özel ürünler</h2><p>Sizin için özel olarak üretilen parçalar, üretim hatası dışında iade alınmaz.</p>"
+    }
+  ],
+  "products": [
+    {
+      "id": "mkp000000000001",
+      "kind": "product",
+      "title": "Zenith Abajur",
+      "slug": "zenith-abajur",
+      "summary": "El çizimi ejderha ve sakura dalları, pembe pliseli şapkasıyla.",
+      "description": "<p>Zenith, el çizimi ejderha ve sakura ağacı temasıyla hayata geçti. Gövdedeki her çizgi elle çizildi; ışık yandığında pembe pliseli şapka ve çiçekler odaya yumuşak bir sıcaklık verir.</p><ul><li>Tamamen el yapımı seramik gövde</li><li>El çizimi ejderha ve sakura figürleri</li><li>Pliseli kumaş abajur şapkası</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "zenith-abajur-1.webp",
+        "zenith-abajur-2.webp",
+        "zenith-abajur-3.webp",
+        "zenith-abajur-4.webp"
+      ],
+      "price": 21080,
+      "stock": 1
+    },
+    {
+      "id": "mkp000000000002",
+      "kind": "product",
+      "title": "Moss No.01 Duvar Apliği",
+      "slug": "moss-duvar-apligi",
+      "summary": "Işık kapalıyken heykelsi bir obje, açıkken sakin ve sıcak bir ışık.",
+      "description": "<p>Doğanın yumuşak formlarından ilham alan Moss No.01, ışık kapalıyken duvarda heykelsi bir obje, aydınlandığında ise bulunduğu yere sakin ve sıcak bir atmosfer veren el yapımı bir seramik aplik.</p><ul><li>Yüksek ısıda pişirilmiş el yapımı seramik gövde</li><li>Işığı yumuşak dağıtan opal cam küre</li><li>Zincirli aç/kapa anahtarı</li><li>Yatak başı, koridor ve okuma köşeleri için</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "moss-duvar-apligi-1.webp",
+        "moss-duvar-apligi-2.webp",
+        "moss-duvar-apligi-3.webp"
+      ],
+      "price": 4500,
+      "stock": 3
+    },
+    {
+      "id": "mkp000000000003",
+      "kind": "product",
+      "title": "Biyo Vazo",
+      "slug": "biyo-vazo",
+      "summary": "Fil, maymun, geyik ve ayı: dört figür, dört anlam.",
+      "description": "<p>Gücü temsil eden fil, zekâyı simgeleyen maymun, zarafeti yansıtan geyik ve koruyuculuğu simgeleyen ayı. Biyo, hayvan karakterlerini ince çizgilerle bir araya getirerek doğanın dengesini anlatan bir koleksiyon parçası.</p><ul><li>El yapımı seramik, elle çizilmiş figürler</li><li>Dekoratif obje olarak tasarlandı</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "biyo-vazo-1.webp",
+        "biyo-vazo-2.webp",
+        "biyo-vazo-3.webp",
+        "biyo-vazo-4.webp"
+      ],
+      "price": 7950,
+      "stock": 1
+    },
+    {
+      "id": "mkp000000000004",
+      "kind": "product",
+      "title": "Aurora · Sarmaşık",
+      "slug": "aurora-sarmasik",
+      "summary": "Gövdesine dolanan yeşil sarmaşık ve pembe çiçekler.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Sarmaşık; gövdesine dolanan yeşil sarmaşık ve pembe çiçeklerle bahar havası taşır.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-sarmasik-1.webp",
+        "aurora-sarmasik-2.webp",
+        "aurora-sarmasik-3.webp",
+        "aurora-sarmasik-4.webp"
+      ],
+      "price": 5000,
+      "stock": 2
+    },
+    {
+      "id": "mkp000000000005",
+      "kind": "product",
+      "title": "Aurora · Papatya",
+      "slug": "aurora-papatya",
+      "summary": "Sade yüz, kucağında küçük bir papatya.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Papatya, serinin en sade yüzü: kucağındaki küçük papatya demeti ve yumuşak renkleriyle her odaya uyar.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-papatya-1.webp",
+        "aurora-papatya-2.webp",
+        "aurora-papatya-3.webp",
+        "aurora-papatya-4.webp"
+      ],
+      "price": 4500,
+      "stock": 2
+    },
+    {
+      "id": "mkp000000000006",
+      "kind": "product",
+      "title": "Aurora · Ejder ve Gül",
+      "slug": "aurora-ejder-ve-gul",
+      "summary": "Kırmızı güller arasında kıvrılan mavi bir ejder.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Ejder ve Gül; kırmızı güllerin arasında kıvrılan mavi bir ejderle serinin en masalsı parçalarından biri.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-ejder-ve-gul-1.webp",
+        "aurora-ejder-ve-gul-2.webp",
+        "aurora-ejder-ve-gul-3.webp",
+        "aurora-ejder-ve-gul-4.webp"
+      ],
+      "price": 5000,
+      "stock": 1
+    },
+    {
+      "id": "mkp000000000007",
+      "kind": "product",
+      "title": "Aurora · Gül Bahçesi",
+      "slug": "aurora-gul-bahcesi",
+      "summary": "Yeşil yapraklar ve kırmızı güllerle çevrili bir yüz.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Gül Bahçesi; yeşil yapraklar ve kırmızı güllerle çevrili, sıcak ve canlı bir yüz.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-gul-bahcesi-1.webp",
+        "aurora-gul-bahcesi-2.webp",
+        "aurora-gul-bahcesi-3.webp",
+        "aurora-gul-bahcesi-4.webp"
+      ],
+      "price": 5000,
+      "stock": 2
+    },
+    {
+      "id": "mkp000000000008",
+      "kind": "product",
+      "title": "Abstrakt Glow Abajur",
+      "slug": "abstrakt-glow-abajur",
+      "summary": "Sıçratma tekniğiyle elle dekore edilmiş, her biri tek desen.",
+      "description": "<p>Abstrakt Glow, sıçratma tekniğiyle elle dekore edildi. Spontane dokunuşlarla oluşan desen hiçbir parçada tekrar etmez.</p><ul><li>Seramik gövde, sıçratma tekniğiyle el dekoru</li><li>Kumaş abajur şapkası</li><li>Yaklaşık 50 cm yükseklik</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "abstrakt-glow-abajur-1.webp",
+        "abstrakt-glow-abajur-2.webp",
+        "abstrakt-glow-abajur-3.webp"
+      ],
+      "price": 10200,
+      "stock": 1
+    },
+    {
+      "id": "mkp000000000009",
+      "kind": "product",
+      "title": "Vahşi Işık Abajur",
+      "slug": "vahsi-isik-abajur",
+      "summary": "Yarasa, kirpi, kurt ve geyik: yabani ruhlar ışıkla buluşuyor.",
+      "description": "<p>Yarasa, kirpi, kurt ve geyik gibi yabani ruhları bir araya getiren bu abajur, doğanın sessiz derinliğini ve gizemini iç mekâna taşır.</p><ul><li>El yapımı seramik gövde, elle çizilmiş figürler</li><li>Kumaş abajur şapkası</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "vahsi-isik-abajur-1.webp",
+        "vahsi-isik-abajur-2.webp"
+      ],
+      "price": 7800,
+      "stock": 0
+    },
+    {
+      "id": "mkp000000000010",
+      "kind": "product",
+      "title": "Aurora · Koi",
+      "slug": "aurora-koi",
+      "summary": "Rengârenk koi balıkları ve yelpaze desenleri.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Koi; rengârenk balıkları ve yelpaze desenleriyle serinin en renkli parçası.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-koi-1.webp",
+        "aurora-koi-2.webp",
+        "aurora-koi-3.webp",
+        "aurora-koi-4.webp"
+      ],
+      "price": 5000,
+      "stock": 2
+    },
+    {
+      "id": "mkp000000000011",
+      "kind": "product",
+      "title": "Aurora · Kediler",
+      "slug": "aurora-kediler",
+      "summary": "Sarı kediler ve balıklar: çocuk odasının neşeli ışığı.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Kediler; sarı kediler ve balıklarla çocuk odalarına ve neşeli köşelere yakışır.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-kediler-1.webp",
+        "aurora-kediler-2.webp",
+        "aurora-kediler-3.webp",
+        "aurora-kediler-4.webp"
+      ],
+      "price": 5000,
+      "stock": 3
+    },
+    {
+      "id": "mkp000000000012",
+      "kind": "product",
+      "title": "Aurora Mini",
+      "slug": "aurora-mini",
+      "summary": "Serinin küçük boyu, Edison ampule göre tasarlandı.",
+      "description": "<p>Aurora Mini, serinin küçük boyu. Yüksek ısıda pişirilerek dayanıklılığı artırıldı; ortama sıcak, yumuşak ve huzurlu bir ışık verir.</p><ul><li>El yapımı seramik gövde</li><li>E27 duy</li><li>1,5 m aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-mini-1.webp",
+        "aurora-mini-2.webp",
+        "aurora-mini-3.webp",
+        "aurora-mini-4.webp"
+      ],
+      "price": 4500,
+      "stock": 2
+    },
+    {
+      "id": "mkp000000000013",
+      "kind": "product",
+      "title": "Aurora · Ay ve Yıldız",
+      "slug": "aurora-ay-ve-yildiz",
+      "summary": "Ay, yıldız ve elmas ampul: gece için bir yüz.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Ay ve Yıldız; hilal küpeleri ve yıldız çizimleriyle, elmas biçimli ampulle tamamlanan bir gece yüzü.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-ay-ve-yildiz-1.webp",
+        "aurora-ay-ve-yildiz-2.webp",
+        "aurora-ay-ve-yildiz-3.webp",
+        "aurora-ay-ve-yildiz-4.webp"
+      ],
+      "price": 5000,
+      "stock": 2
+    },
+    {
+      "id": "mkp000000000014",
+      "kind": "product",
+      "title": "Aurora · Kızıl Ejder",
+      "slug": "aurora-kizil-ejder",
+      "summary": "Kızıl saçlar ve gövdesine sarılan bir ejder.",
+      "description": "<p>Aurora serisi, stüdyonun imza figürü olan kadın yüzlerinden oluşur. Her biri elde şekillendirilir, figürleri ve renkleri tek tek elle boyanır; çizim ve renk seçimlerinde doğanın mistik ve estetik dokusundan ilham alınır.</p><p>Kızıl Ejder; kızıl saçları ve gövdesine sarılan ejderiyle serinin en cesur yüzü.</p><ul><li>El yapımı, yüksek ısıda pişirilmiş seramik gövde</li><li>Yaklaşık 16 cm yükseklik, 12 cm genişlik</li><li>E27 duy, aç/kapa anahtarlı kablo</li><li>Ampul ürüne dahil değildir</li></ul><p>El yapımı olduğu için form, doku ve renk tonlarında fotoğraftakinden küçük farklar olabilir; bu, parçanın tek olduğunu gösterir.</p>",
+      "images": [
+        "aurora-kizil-ejder-1.webp",
+        "aurora-kizil-ejder-2.webp",
+        "aurora-kizil-ejder-3.webp",
+        "aurora-kizil-ejder-4.webp"
+      ],
+      "price": 5000,
+      "stock": 1
+    },
+    {
+      "id": "mkw000000000001",
+      "kind": "workshop",
+      "title": "Çarkta Başlangıç Atölyesi",
+      "slug": "carkta-baslangic-atolyesi",
+      "summary": "Çamuru merkezlemekten ilk kaseye: çarkla tanışma. 3 saat, 6 kişilik grup.",
+      "description": "<p>Çamuru merkezlemeyi, açmayı ve duvar çekmeyi adım adım öğreniyoruz. Atölyenin sonunda kendi kasenizi ya da kupanızı çıkarıyorsunuz.</p><ul><li>3 saat, en çok 6 kişi</li><li>Çamur, sır ve fırınlama dahil</li><li>Parçalar yaklaşık 3 hafta sonra teslim</li></ul>",
+      "images": [],
+      "price": 1750,
+      "stock": 6,
+      "eventDate": "2026-11-14T08:00:00.000Z"
+    },
+    {
+      "id": "mkw000000000002",
+      "kind": "workshop",
+      "title": "El Şekillendirme: Kendi Kupanı Yap",
+      "slug": "el-sekillendirme-kupa-atolyesi",
+      "summary": "Çark kullanmadan, elle ve plaka tekniğiyle kendi kupanızı yapın.",
+      "description": "<p>Çimdikleme ve plaka teknikleriyle kendi kupanızı şekillendiriyor, kulpunu takıyor ve süslüyorsunuz. Hiç deneyim gerekmez.</p><ul><li>2,5 saat, en çok 8 kişi</li><li>Çamur, sır ve fırınlama dahil</li></ul>",
+      "images": [],
+      "price": 1400,
+      "stock": 8,
+      "eventDate": "2026-11-22T08:00:00.000Z"
+    },
+    {
+      "id": "mkw000000000003",
+      "kind": "workshop",
+      "title": "Boyama Atölyesi: Aurora Figürleri",
+      "slug": "boyama-atolyesi-aurora-figurleri",
+      "summary": "Pişmiş gövdeye stüdyonun figür diliyle kendi deseninizi çizin.",
+      "description": "<p>Hazır pişmiş seramik gövdeler üzerine, stüdyonun imza figürlerinden ilham alarak kendi deseninizi çizip boyuyorsunuz.</p><ul><li>2 saat, en çok 10 kişi</li><li>Boya, sır ve fırınlama dahil</li></ul>",
+      "images": [],
+      "price": 1200,
+      "stock": 10,
+      "eventDate": "2026-12-06T11:00:00.000Z"
+    },
+    {
+      "id": "mkw000000000004",
+      "kind": "workshop",
+      "title": "Birebir Çark Dersi",
+      "slug": "birebir-cark-dersi",
+      "summary": "Size özel bir ders; tarihi ödeme sonrası birlikte belirliyoruz.",
+      "description": "<p>Çarkta hızlı ilerlemek ya da belirli bir parça üzerinde çalışmak isteyenler için birebir ders. Ödemeden sonra sizi arayıp uygun günü birlikte belirliyoruz.</p><ul><li>2 saat, birebir</li><li>Çamur, sır ve fırınlama dahil</li></ul>",
+      "images": [],
+      "price": 2500,
+      "stock": 4
     }
   ]
 }

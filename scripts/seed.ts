@@ -8,23 +8,27 @@ const MEDIA = join(SITE, "src", "assets", "media")
 
 type Json = Record<string, unknown>
 export type Content = {
-  settings: { companyName: string; phone: string; email: string; address: string; heroTitle: string; heroText: string; seoDescription: string; cfAnalyticsToken?: string }
+  settings: {
+    companyName: string; phone: string; email: string; address: string; heroTitle: string; heroText: string; heroImage?: string; seoDescription: string
+    cfAnalyticsToken?: string; instagram: string; hours: string; aboutTitle: string; aboutText: string; aboutImage?: string; workshopIntro: string
+  }
   posts: { title: string; slug: string; date: string; summary: string; body: string; cover?: string }[]
   redirects: { from: string; to: string; code: string }[]
   pages: { title: string; slug: string; seoDescription: string; body: string; published: boolean }[]
+  products: { id: string; kind: string; title: string; slug: string; summary: string; description: string; images: string[]; price: number; stock: number; eventDate?: string }[]
 }
 export const loadContent = async (): Promise<Content> => (await Bun.file(join(SITE, "src", "data", "content.json")).json()) as Content
 
 const blob = async (name: string) => new Blob([await Bun.file(join(MEDIA, name)).arrayBuffer()], { type: "image/webp" })
 
 /** Kayıt açar. Boş alanlar gönderilmez; görseller media klasöründen yüklenir. */
-export async function save(pb: Pb, collection: string, fields: Json, files: Record<string, string | undefined> = {}): Promise<Json> {
+export async function save(pb: Pb, collection: string, fields: Json, files: Record<string, string | string[] | undefined> = {}): Promise<Json> {
   const form = new FormData()
   for (const [k, v] of Object.entries(fields)) {
     if (v === undefined || v === null || v === "" || v === 0) continue
     form.set(k, String(v))
   }
-  for (const [field, name] of Object.entries(files)) if (name) form.append(field, await blob(name), name)
+  for (const [field, names] of Object.entries(files)) for (const name of [names ?? []].flat()) form.append(field, await blob(name), name)
   const res = await pb.admin(`/api/collections/${collection}/records`, { method: "POST", body: form })
   if (!res.ok) throw new Error(`seed ${collection}: ${res.status} ${await res.text()}`)
   return (await res.json()) as Json
@@ -35,11 +39,19 @@ export async function seed(pb: Pb): Promise<void> {
   const existing = await pb.admin("/api/collections/settings/records?perPage=1")
   if (!existing.ok) throw new Error(`seed settings: ${existing.status}`)
   if (((await existing.json()) as { totalItems: number }).totalItems > 0) throw new Error("PB dolu (settings kaydı var); tohumlama yalnız boş PB'ye yapılır")
-  const { settings: s, posts, redirects, pages } = await loadContent()
+  const { settings: s, posts, redirects, pages, products } = await loadContent()
   await save(pb, "settings", {
     company_name: s.companyName, phone: s.phone, email: s.email, address: s.address, hero_title: s.heroTitle, hero_text: s.heroText,
-    seo_description: s.seoDescription, cf_analytics_token: s.cfAnalyticsToken,
-  })
+    seo_description: s.seoDescription, cf_analytics_token: s.cfAnalyticsToken, instagram: s.instagram, hours: s.hours,
+    about_title: s.aboutTitle, about_text: s.aboutText, workshop_intro: s.workshopIntro,
+  }, { hero_image: s.heroImage, about_image: s.aboutImage })
+  // kimlikler content.json'dakiyle aynı: PB ve fixture build'i aynı sepet kimliklerini üretir
+  for (const [i, p] of products.entries()) {
+    await save(pb, "products", {
+      id: p.id, kind: p.kind, title: p.title, slug: p.slug, summary: p.summary, description: p.description, price: p.price, stock: p.stock,
+      event_date: p.eventDate?.replace("T", " "), sort: (i + 1) * 10, published: true,
+    }, { images: p.images })
+  }
   for (const [i, p] of posts.entries()) {
     await save(pb, "posts", { title: p.title, slug: p.slug, date: `${p.date} 00:00:00.000Z`, summary: p.summary, body: p.body, position: (i + 1) * 10, published: true }, { cover: p.cover })
   }

@@ -1,0 +1,32 @@
+---
+import ProductCard from "../../components/ProductCard.astro"
+import Base from "../../layouts/Base.astro"
+import { isWorkshop } from "../../lib/catalog"
+import { loadSite } from "../../lib/content"
+import { breadcrumbList, graph, webPage } from "../../lib/jsonld"
+import { shopSettings } from "../../lib/shop-config"
+
+const { products } = await loadSite()
+const items = products.filter((p) => !isWorkshop(p))
+const freeOver = shopSettings()?.shipping.freeOver ?? 0
+const desc = "El yapımı seramik abajur, aplik ve vazolar: Aurora serisi, Zenith, Moss ve diğer tek üretim parçalar."
+const jsonLd = graph(
+  webPage({ site: Astro.site!, path: "/urunler/", name: "Koleksiyon", description: desc, type: "CollectionPage" }),
+  breadcrumbList([{ name: "Ana sayfa", path: "/" }, { name: "Koleksiyon", path: "/urunler/" }], Astro.site!),
+)
+---
+<Base title="Koleksiyon" path="/urunler/" description={desc} jsonLd={jsonLd}>
+  <section class="wrap pb-6 pt-12 md:pt-20">
+    <p class="eyebrow">Koleksiyon</p>
+    <h1 class="display mt-4">Elde şekillenen, <em>tek</em> parçalar</h1>
+    <p class="lead mt-6">Her parça stüdyoda şekillendirilir ve elle boyanır; fotoğraftaki parçadan küçük farklar olabilir.{freeOver > 0 && ` ${new Intl.NumberFormat("tr-TR").format(freeOver)} TL ve üzeri siparişlerde kargo ücretsiz.`}</p>
+  </section>
+  <section class="wrap pt-10">
+    <ul class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {items.map((p, i) => <li><ProductCard product={p} level={2} eager={i < 4} /></li>)}
+    </ul>
+  </section>
+</Base>
+<script>
+  import "../../scripts/shop-ui"
+</script>

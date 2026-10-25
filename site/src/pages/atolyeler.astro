@@ -1,0 +1,46 @@
+---
+import Sprig from "../components/Sprig.astro"
+import WorkshopCard from "../components/WorkshopCard.astro"
+import Base from "../layouts/Base.astro"
+import { isUpcoming, isWorkshop } from "../lib/catalog"
+import { loadSite } from "../lib/content"
+import { breadcrumbList, graph, webPage } from "../lib/jsonld"
+
+const { settings: s, products } = await loadSite()
+const all = products.filter(isWorkshop)
+const upcoming = all.filter((w) => isUpcoming(w))
+const past = all.filter((w) => !isUpcoming(w))
+const desc = "Ankara Çankaya'da çark, el şekillendirme ve boyama atölyeleri. Malzeme, sır ve fırınlama dahil; deneyim gerekmez."
+const jsonLd = graph(
+  webPage({ site: Astro.site!, path: "/atolyeler/", name: "Atölyeler", description: desc, type: "CollectionPage" }),
+  breadcrumbList([{ name: "Ana sayfa", path: "/" }, { name: "Atölyeler", path: "/atolyeler/" }], Astro.site!),
+)
+---
+<Base title="Atölyeler" path="/atolyeler/" description={desc} jsonLd={jsonLd}>
+  <section class="wrap grid gap-8 pb-12 pt-12 md:grid-cols-[1.2fr_0.8fr] md:items-end md:pt-20">
+    <div>
+      <p class="eyebrow">Atölyeler</p>
+      <h1 class="display mt-4">Kendi parçanı <em>kendin</em> yap</h1>
+      {s.workshopIntro && <p class="lead mt-6">{s.workshopIntro}</p>}
+    </div>
+    <div class="card grid gap-3 p-6 text-sm">
+      <Sprig />
+      <p><b>Nasıl kayıt olunur?</b> Atölyeyi seçip "Yerimi ayır"a basın, sepetten ödemeyi tamamlayın. Ödeme onaylanınca yeriniz kesinleşir ve size e-posta gelir.</p>
+      <p class="soft">Grup, doğum günü ya da kurumsal atölye için <a href="/#ziyaret">bize yazın</a>.</p>
+    </div>
+  </section>
+  <section class="wrap" aria-label="Yaklaşan atölyeler">
+    {upcoming.length > 0
+      ? <ul class="grid gap-5 lg:grid-cols-2">{upcoming.map((w) => <li><WorkshopCard workshop={w} level={2} details /></li>)}</ul>
+      : <p class="note">Yeni atölye tarihleri yakında burada. Haber almak için Instagram'dan takip edin.</p>}
+  </section>
+  {past.length > 0 && (
+    <section class="wrap pt-20" aria-labelledby="gecmis">
+      <h2 id="gecmis" class="text-2xl">Tamamlanan atölyeler</h2>
+      <ul class="mt-6 grid gap-2 text-ink-soft">{past.map((w) => <li>{w.title}</li>)}</ul>
+    </section>
+  )}
+</Base>
+<script>
+  import "../scripts/shop-ui"
+</script>

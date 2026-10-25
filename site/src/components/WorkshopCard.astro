@@ -1,0 +1,30 @@
+---
+import AddToCart from "./AddToCart.astro"
+import { isUpcoming, price, stockNote, workshopDate } from "../lib/catalog"
+import { sanitize } from "../lib/sanitize"
+import type { Product } from "../lib/types"
+
+// Atölye kartı: tarih kutusu, özet, fiyat, kontenjan, "Yerimi ayır". details: açıklamanın tamamı (Atölyeler sayfası).
+interface Props { workshop: Product; level?: 2 | 3; details?: boolean }
+const { workshop: w, level = 3, details = false } = Astro.props
+const H = `h${level}` as "h2" | "h3"
+const date = w.eventDate ? workshopDate(w.eventDate) : undefined
+const note = stockNote(w)
+const upcoming = isUpcoming(w)
+---
+<article class="workshop" id={w.slug} data-product-id={w.id}>
+  {date
+    ? <div class="datebox"><b>{date.day}</b><span>{date.month}</span></div>
+    : <div class="datebox" data-open><b>Size özel</b><span>tarih</span></div>}
+  <div class="grid gap-2">
+    <H class="text-2xl">{w.title}</H>
+    <p class="soft text-sm">{date ? date.long : "Tarihi ödemeden sonra birlikte belirliyoruz"}</p>
+    <p>{w.summary}</p>
+    {details && <div class="prose-body soft text-sm" set:html={sanitize(w.description)} />}
+    <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      <span class="price text-lg">{price(w.price)}</span>
+      {upcoming && <span class="soft text-sm" data-stock-text>{note ? note.label : `${w.stock} kişilik kontenjan`}</span>}
+    </p>
+    {upcoming ? <div class="mt-2"><AddToCart product={w} /></div> : <p class="soft text-sm">Bu atölye tamamlandı.</p>}
+  </div>
+</article>

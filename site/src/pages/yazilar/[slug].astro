@@ -19,7 +19,7 @@ recordLastmod(path, post.date)
 // Sayfa düzeyi yapılandırılmış veri (lib/jsonld.ts, core): yazı + gezinti izi. Kurum verisi Head'de (lib/seo.ts).
 const jsonLd = graph(
   article({ site: Astro.site!, path, name: post.title, description: post.summary, datePublished: post.date, dateModified: post.updated }),
-  breadcrumbList([{ name: "Ana sayfa", path: "/" }, { name: "Yazılar", path: "/#yazilar" }, { name: post.title, path }], Astro.site!),
+  breadcrumbList([{ name: "Ana sayfa", path: "/" }, { name: "Yazılar", path: "/#notlar" }, { name: post.title, path }], Astro.site!),
 )
 ---
 <Base title={post.title} path={path} description={post.summary} jsonLd={jsonLd}>
@@ -28,6 +28,6 @@ const jsonLd = graph(
     <h1 class="mt-2 text-[clamp(2rem,4.5vw,3rem)]">{post.title}</h1>
     {post.cover && <Photo img={post.cover} alt={post.title} class="mt-8 w-full rounded-2xl" sizes="(min-width: 768px) 720px, 100vw" />}
     <div class="prose-body mt-8" set:html={sanitize(post.body)} />
-    <p class="mt-12"><a href="/#yazilar">Tüm yazılar</a></p>
+    <p class="mt-12"><a href="/#notlar">Stüdyodan notlar</a></p>
   </article>
 </Base>

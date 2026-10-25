@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro"
+
+// Ödemeden dönüş ve sipariş durumu: /siparis/?no=<numara>&t=<anahtar> (lib/shop.js returnUrl). Durum tarayıcıda
+// PB'den okunur (scripts/order-page.ts); anahtar olmadan sipariş görünmez. Sayfa arama motorlarına kapalı.
+---
+<Base title="Siparişiniz" path="/siparis/" description="Sipariş durumu." noindex>
+  <section class="wrap max-w-3xl pb-8 pt-12 md:pt-16" data-order>
+    <p class="eyebrow">Sipariş</p>
+    <h1 class="title-lg mt-3" data-order-title>Siparişiniz</h1>
+    <p class="lead mt-4" data-order-lead>Sipariş bilgileri yükleniyor…</p>
+    <div data-order-body hidden class="card mt-8 p-6 md:p-8">
+      <p class="flex flex-wrap justify-between gap-2"><span>Sipariş no: <b data-order-no></b></span><span class="badge static" data-order-status></span></p>
+      <ul data-order-items class="mt-6 border-t border-line"></ul>
+      <div class="mt-4 grid gap-1">
+        <p class="summary-row"><span>Ara toplam</span><span data-o-subtotal></span></p>
+        <p class="summary-row"><span>Kargo</span><span data-o-shipping></span></p>
+        <p class="summary-row" data-total><span>Toplam</span><span data-o-total></span></p>
+      </div>
+    </div>
+    <div class="mt-8 flex flex-wrap gap-3"><a href="/urunler/" class="btn-ghost">Koleksiyona dön</a><a href="/#ziyaret" class="link-arrow self-center">Bir sorunuz mu var? Bize yazın →</a></div>
+  </section>
+</Base>
+<script>
+  import "../scripts/order-page"
+</script>

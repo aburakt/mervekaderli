@@ -15,28 +15,35 @@ const patch = async (pb: Pb, collection: string, id: string, body: Record<string
 
 export const SITE: SiteConfig = {
   checks: [
-    // tek dilli: hreflang yok (çok dilli sitede hasNot kaldırılır, has'a hreflang eklenir; docs/i18n.md)
-    { name: "Ana sayfa", path: "/", has: ['<html lang="tr"', "<h1", "Örnek Kurum", 'rel="canonical"', 'property="og:image"', "Örnek yazı", '"@type":"LocalBusiness"', 'href="/kvkk-aydinlatma-metni/"'], hasNot: ["hreflang"] },
-    { name: "Yazı sayfası", path: "/yazilar/ornek-yazi/", has: ["<h1", "Örnek yazı", "Yazının metni"] },
-    { name: "KVKK aydınlatma metni", path: "/kvkk-aydinlatma-metni/", has: ["<h1", "KVKK Aydınlatma Metni", "Taslak metin, gözden geçirilmeli"] },
+    // tek dilli: hreflang yok
+    { name: "Ana sayfa", path: "/", has: ['<html lang="tr"', "<h1", "Topraktan, elde", 'rel="canonical"', 'property="og:image"', '"@type":"LocalBusiness"', "Aurora · Sarmaşık", "Çarkta Başlangıç Atölyesi", 'href="/kvkk-aydinlatma-metni/"', 'href="/sepet/"'], hasNot: ["hreflang"] },
+    { name: "Koleksiyon", path: "/urunler/", has: ["<h1", "Zenith Abajur", "Moss No.01 Duvar Apliği", '"@type":"CollectionPage"'] },
+    { name: "Ürün sayfası: fiyat, stok, sepete ekle, Product verisi", path: "/urunler/aurora-koi/", has: ["<h1", "Aurora · Koi", "₺5.000", "data-buy", 'data-id="mkp000000000010"', "Sepete ekle", '"@type":"Product"', '"priceCurrency":"TRY"'] },
+    { name: "Tükenmiş ürün satılamaz", path: "/urunler/vahsi-isik-abajur/", has: ["Tükendi", 'data-add disabled', "https://schema.org/SoldOut"] },
+    { name: "Atölyeler", path: "/atolyeler/", has: ["<h1", "Çarkta Başlangıç Atölyesi", "Birebir Çark Dersi", "Yerimi ayır", 'data-kind="workshop"'] },
+    { name: "Sepet ve ödeme formu", path: "/sepet/", has: ["data-checkout", 'name="contract_consent"', 'name="kvkk_consent"', 'href="/mesafeli-satis-sozlesmesi/"', 'data-ship-free="3000"', 'content="noindex'] },
+    { name: "Sipariş sayfası", path: "/siparis/", has: ["data-order", 'content="noindex'] },
+    { name: "Mağaza PB adresi sayfada (canlı stok, ödeme)", path: "/urunler/", has: ["data-shop-pb=\"http://127.0.0.1:", 'data-shop-id="merve"'] },
+    { name: "KVKK aydınlatma metni", path: "/kvkk-aydinlatma-metni/", has: ["<h1", "KVKK Aydınlatma Metni", "Taslak metin, gözden geçirilmeli", "Shopier"] },
+    { name: "Mesafeli satış sözleşmesi", path: "/mesafeli-satis-sozlesmesi/", has: ["<h1", "Cayma hakkı"] },
+    { name: "Ön bilgilendirme formu", path: "/on-bilgilendirme-formu/", has: ["<h1", "Satıcı"] },
+    { name: "İptal, iade ve değişim", path: "/iptal-iade-ve-degisim/", has: ["<h1", "Atölyeler"] },
     { name: "Gizlilik ve çerez politikası", path: "/gizlilik-politikasi/", has: ["<h1", "Çerezler"] },
     { name: "İletişim formu PB'ye gönderir", path: "/", has: ['data-contact-form', "/api/collections/messages/records", 'name="kvkk_consent"', 'name="website"'] },
-    // PB adresi build'de connect-src'ye eklenir (site/integrations/pb-csp.ts); verify PB'si 127.0.0.1'de çalışır
-    { name: "CSP form gönderimine izin verir", path: "/_headers", has: ["connect-src 'self' https://cloudflareinsights.com http://127.0.0.1:"] },
+    // PB adresi build'de connect-src'ye, Shopier form-action'a eklenir (site/integrations/pb-csp.ts)
+    { name: "CSP: PB'ye istek ve Shopier'e ödeme formu", path: "/_headers", has: ["connect-src 'self' https://cloudflareinsights.com http://127.0.0.1:", "https://www.shopier.com"] },
     { name: "404 sayfası", path: "/yok-boyle-bir-sayfa/", status: 404, has: ["Sayfa bulunamadı"] },
     { name: "Sitemap", path: "/sitemap-index.xml" },
-    { name: "Sitemap tarihleri", path: "/sitemap-0.xml", has: ["<lastmod>2026-10-01"] },
+    { name: "Sitemap ürünleri listeler", path: "/sitemap-0.xml", has: ["/urunler/aurora-koi/", "/atolyeler/"] },
     { name: "Robots", path: "/robots.txt", has: ["Sitemap:"] },
-    // GEO ve WebMCP (lib/geo.ts, docs/geo-webmcp.md): ortak kontroller, sonra bu sitenin içeriği
     ...GEO_CHECKS,
     { name: "Robots: eğitim tarayıcıları izinli (geo.ts aiTraining)", path: "/robots.txt", has: ["User-agent: meta-externalagent\nAllow: /\n"] },
-    { name: "llms.txt", path: "/llms.txt", has: ["Örnek Kurum", "/yazilar/ornek-yazi/): ", "## Yasal bilgiler"] },
-    { name: "llms-full.txt", path: "/llms-full.txt", has: ["## Örnek yazı", "Yazının metni", "## Veri sorumlusu"] },
-    { name: "Yazının markdown eşi", path: "/yazilar/ornek-yazi/index.md", has: ["# Örnek yazı", "Kaynak: ", "Tarih: 2026-10-01"] },
-    { name: "Markdown eşi ve WebMCP betiği sayfada", path: "/yazilar/ornek-yazi/", has: ['<link rel="alternate" type="text/markdown" href="/yazilar/ornek-yazi/index.md">', '"@type":"Article"', '"@type":"BreadcrumbList"'] },
-    { name: "WebMCP verisi", path: "/webmcp.json", has: ['"name":"Örnek Kurum"', '"path":"/yazilar/ornek-yazi/"', '"kind":"form"'] },
+    { name: "llms.txt", path: "/llms.txt", has: ["Merve Kaderli Ceramic Studio", "/urunler/aurora-koi/): ", "## Koleksiyon", "## Yasal bilgiler"] },
+    { name: "llms-full.txt", path: "/llms-full.txt", has: ["## Aurora · Koi", "Çarkta Başlangıç Atölyesi", "## Satıcı"] },
+    { name: "Ürünün markdown eşi", path: "/urunler/aurora-koi/index.md", has: ["# Aurora · Koi", "satışta", "Kaynak: "] },
+    { name: "WebMCP verisi", path: "/webmcp.json", has: ['"name":"Merve Kaderli Ceramic Studio"', '"path":"/urunler/aurora-koi/"', '"kind":"form"'] },
     { name: "İletişim formu WebMCP bildirimsel araç", path: "/", has: ['toolname="contact_message"', "toolparamdescription="], hasNot: ["toolautosubmit"] },
-    { name: "Yönlendirmeler", path: "/_redirects", has: ["\n/index.html / 301\n", "\n/eski-yazi /yazilar/ornek-yazi/ 301\n/eski-yazi/ /yazilar/ornek-yazi/ 301\n"] },
+    { name: "Yönlendirmeler", path: "/_redirects", has: ["\n/index.html / 301\n"] },
   ],
   hookSample: {
     collection: "posts",
@@ -53,7 +60,7 @@ export const SITE: SiteConfig = {
     {
       name: "Ziyaret sayacı (Cloudflare Web Analytics) dış betik", path: "/",
       has: ['src="https://static.cloudflareinsights.com/beacon.min.js"', `data-cf-beacon="{&quot;token&quot;:&quot;${TOKEN}&quot;}"`, 'href="/gizlilik-politikasi/"'],
-      hasNot: ['href="/kvkk-aydinlatma-metni/"'],
+      hasNot: [">KVKK Aydınlatma Metni</a>"],
     },
     { name: "Taslak sayfa yayınlanmaz", path: "/kvkk-aydinlatma-metni/", status: 404 },
   ],

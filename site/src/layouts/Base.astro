@@ -4,56 +4,86 @@ import ErrorTracking from "../components/ErrorTracking.astro"
 import Geo from "../components/Geo.astro"
 import Head from "../components/Head.astro"
 import { loadSite } from "../lib/content"
-import { lines } from "../lib/format"
+import { lines, telHref } from "../lib/format"
 import { type Alternate, DEFAULT_LANG, type Lang } from "../lib/i18n"
 import { isFixtureMode } from "../lib/pb"
 import { cfBeacon } from "../lib/seo"
+import { shopAttrs } from "../lib/shop-config"
 
 // lang/alternates yalnız çok dilli sitede verilir (docs/i18n.md); varsayılan tek dil.
-interface Props { title?: string; path: string; description?: string; jsonLd?: object; lang?: Lang; alternates?: Alternate[] }
-const { title, path, description, jsonLd, lang = DEFAULT_LANG, alternates = [] } = Astro.props
+interface Props { title?: string; path: string; description?: string; jsonLd?: object; lang?: Lang; alternates?: Alternate[]; noindex?: boolean }
+const { title, path, description, jsonLd, lang = DEFAULT_LANG, alternates = [], noindex } = Astro.props
 const { settings, pages } = await loadSite()
 const year = new Date().getFullYear()
 // Çerezsiz ziyaret sayacı (Cloudflare Web Analytics): dış betik, inline kod yok; önizlemede (fixture) eklenmez.
 const beacon = isFixtureMode() ? undefined : cfBeacon(settings.cfAnalyticsToken)
+const nav = [
+  { href: "/urunler/", label: "Koleksiyon" },
+  { href: "/atolyeler/", label: "Atölyeler" },
+  { href: "/#studyo", label: "Stüdyo" },
+  { href: "/#ziyaret", label: "Ziyaret" },
+]
+const current = (href: string) => (href.startsWith("/#") ? undefined : path.startsWith(href) ? "page" : undefined)
 ---
 <!doctype html>
 <html lang={lang}>
   <head>
-    <Head title={title} path={path} description={description} jsonLd={jsonLd} lang={lang} alternates={alternates} />
+    <Head title={title} path={path} description={description} jsonLd={jsonLd} lang={lang} alternates={alternates} noindex={noindex} />
     <Geo path={path} />
     <ErrorTracking />
   </head>
-  <body class="flex min-h-dvh flex-col">
+  <body class="flex min-h-dvh flex-col" {...shopAttrs()}>
     {isFixtureMode() && <p data-fixture-banner class="fixture-banner">Önizleme: örnek içerik (PocketBase bağlı değil)</p>}
-    <header class="border-b border-line bg-paper">
-      <div class="wrap flex items-center justify-between py-4">
-        <a href="/" class="text-lg font-semibold text-ink no-underline">{settings.companyName}</a>
-        <nav aria-label="Ana menü" class="flex gap-5"><a href="/#yazilar">Yazılar</a><a href="/#iletisim">İletişim</a></nav>
+    {settings.hours && <p class="topbar">Çankaya'daki stüdyomuz açık: {settings.hours}</p>}
+    <header class="site-header">
+      <div class="wrap flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3">
+        <a href="/" class="wordmark" aria-label={`${settings.companyName}, ana sayfa`}><b>Merve Kaderli</b><small lang="en">Ceramic Studio</small></a>
+        <nav aria-label="Ana menü" class="nav order-3 flex w-full gap-5 overflow-x-auto pb-1 md:order-2 md:w-auto md:gap-7 md:pb-0">
+          {nav.map((n) => <a href={n.href} aria-current={current(n.href)}>{n.label}</a>)}
+        </nav>
+        <a href="/sepet/" class="cart-link order-2 md:order-3" aria-current={path === "/sepet/" ? "page" : undefined}>
+          Sepet <span class="cart-count" data-cart-count data-empty aria-label="Sepetteki ürün sayısı">0</span>
+        </a>
       </div>
     </header>
     <main id="main" class="flex-1"><slot /></main>
-    <footer class="border-t border-line bg-paper">
-      <div class="wrap grid gap-6 py-10 text-sm text-ink-soft md:grid-cols-2">
-        <address class="not-italic">
-          {lines(settings.address).map((l) => <span class="block">{l}</span>)}
-        </address>
-        <p class="md:text-right">
-          {settings.phone && <span class="block">{settings.phone}</span>}
-          {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
-        </p>
-      </div>
-      <div class="wrap flex flex-wrap gap-x-5 gap-y-2 pb-8 text-xs text-ink-soft">
-        <p>© {year} {settings.companyName}</p>
-        {pages.length > 0 && (
-          <nav aria-label="Yasal bilgiler" class="flex flex-wrap gap-x-5 gap-y-2">
+    <footer class="mt-24 border-t border-line bg-sand/60">
+      <div class="wrap grid gap-10 py-14 text-sm md:grid-cols-4">
+        <div class="grid content-start gap-3">
+          <a href="/" class="wordmark"><b>Merve Kaderli</b><small lang="en">Ceramic Studio</small></a>
+          <p class="text-ink-soft">El yapımı seramik aydınlatma ve objeler, Ankara'da şekillenir.</p>
+        </div>
+        <div>
+          <h2 class="eyebrow font-sans">Ziyaret</h2>
+          <address class="mt-3 not-italic">
+            {lines(settings.address).map((l) => <span class="block">{l}</span>)}
+            {settings.hours && <span class="mt-2 block text-ink-soft">{settings.hours}</span>}
+          </address>
+        </div>
+        <div>
+          <h2 class="eyebrow font-sans">İletişim</h2>
+          <p class="mt-3 grid gap-1">
+            {settings.phone && <a href={telHref(settings.phone)}>{settings.phone}</a>}
+            {settings.email && <a href={`mailto:${settings.email}`}>{settings.email}</a>}
+            {settings.instagram && <a href={settings.instagram} rel="noopener" target="_blank">Instagram</a>}
+          </p>
+        </div>
+        <div>
+          <h2 class="eyebrow font-sans">Alışveriş</h2>
+          <p class="mt-3 grid gap-1">
+            <a href="/sepet/">Sepetim</a>
             {pages.map((p) => <a href={`/${p.slug}/`}>{p.title}</a>)}
-          </nav>
-        )}
+          </p>
+        </div>
+      </div>
+      <div class="wrap flex flex-wrap justify-between gap-3 border-t border-line py-6 text-xs text-ink-soft">
+        <p>© {year} {settings.companyName}</p>
+        <p>Ödemeler Shopier güvencesiyle alınır.</p>
       </div>
     </footer>
     <script>
       import "../scripts/console-egg"
+      import "../scripts/cart-badge"
     </script>
     {beacon && <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={beacon}></script>}
   </body>

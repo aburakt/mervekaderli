@@ -27,6 +27,9 @@ const DEFAULTS = {
   maxQty: 20,
   // Ödeme adımı hız sınırı: aynı IP'den pencere (dakika) içinde en çok istek
   rateLimit: { max: 10, minutes: 10 },
+  // Seçenek (ör. beden): { field: "sizes", label: "Beden" }. Üründe bu çoklu seçim alanı doluysa müşteri listeden birini
+  // seçer (zorunlu), boşsa seçenek gönderilmez. Stok ürün başınadır; seçenek siparişte kalemle saklanır. null = yok.
+  option: null,
 }
 
 const HOLD = ["pending", "paid", "shipped", "delivered"]
@@ -50,6 +53,8 @@ function provider(opts) {
 const kurus = (tl) => Math.round(Number(tl || 0) * 100)
 const tl = (k) => Math.round(k) / 100
 const nowIso = () => new Date().toISOString().replace("T", " ")
+/** Kalemin görünen adı: seçenek varsa "Ad (Beden: 38)". E-posta, sağlayıcı ve sipariş sayfası bunu kullanır. */
+const lineName = (l) => (l && l.option ? `${l.title} (${l.optionLabel || "Seçenek"}: ${l.option})` : String((l && l.title) || ""))
 // eslint-disable-next-line no-control-regex -- kontrol karakterleri (satır sonu vb.) bilerek temizlenir
 const clean = (v, max) => String(v === null || v === undefined ? "" : v).replace(/[\u0000-\u001f\u007f]+/g, " ").trim().slice(0, max)
 
@@ -143,24 +148,30 @@ function checkout(e) {
   if (body.kvkk_consent !== true) throw bad("Siparişi tamamlamak için KVKK aydınlatma metnini onaylamanız gerekir.")
   if (body.contract_consent !== true) throw bad("Siparişi tamamlamak için ön bilgilendirme formunu ve mesafeli satış sözleşmesini onaylamanız gerekir.")
 
-  // aynı ürün birden çok satırda gelirse birleşir
+  // aynı ürün (ve aynı seçenek) birden çok satırda gelirse birleşir
   const wanted = {}
   for (const it of Array.isArray(body.items) ? body.items : []) {
     const id = clean(it && it.id, 30)
+    const option = clean(it && it.option, 60)
     const qty = Number(it && it.qty)
     if (!id || !Number.isInteger(qty) || qty < 1 || qty > opts.maxQty) throw bad(`Adet 1 ile ${opts.maxQty} arasında olmalı.`)
-    wanted[id] = (wanted[id] || 0) + qty
+    const key = `${id}\n${option}`
+    wanted[key] = wanted[key] || { id, option, qty: 0 }
+    wanted[key].qty += qty
   }
-  const ids = Object.keys(wanted)
-  if (!ids.length) throw bad("Sepetiniz boş.")
-  if (ids.length > opts.maxItems) throw bad(`Bir siparişte en çok ${opts.maxItems} farklı ürün olabilir.`)
+  const keys = Object.keys(wanted)
+  if (!keys.length) throw bad("Sepetiniz boş.")
+  if (keys.length > opts.maxItems) throw bad(`Bir siparişte en çok ${opts.maxItems} farklı ürün olabilir.`)
+  const optField = opts.option && opts.option.field ? String(opts.option.field) : ""
+  const optLabel = (opts.option && opts.option.label) || "Seçenek"
 
   let order
   e.app.runInTransaction((tx) => {
     const lines = []
     let subtotal = 0
     let physical = false
-    for (const id of ids) {
+    for (const key of keys) {
+      const { id, option, qty } = wanted[key]
       let p
       try {
         p = tx.findRecordById("products", id)
@@ -174,12 +185,14 @@ function checkout(e) {
       const kind = p.getString("kind") || "product"
       const date = p.getDateTime("event_date")
       if (kind === "workshop" && !date.isZero() && date.unix() * 1000 < Date.now()) throw bad(`${title}: atölye tarihi geçti.`)
-      const qty = wanted[id]
+      const choices = optField ? Array.from(p.getStringSlice(optField) || []).map(String) : []
+      if (choices.length && !option) throw bad(`${title} için ${optLabel} seçin.`)
+      if (option && !choices.includes(option)) throw bad(`${title}: ${optLabel} ${option} bulunmuyor.`)
       const stock = p.getInt("stock")
       if (stock < qty) throw bad(stock > 0 ? `${title}: yalnız ${stock} adet kaldı.` : `${title} tükendi.`)
       p.set("stock", stock - qty)
       tx.save(p)
-      lines.push({ id, title, kind, qty, price: tl(price) })
+      lines.push(option ? { id, title, kind, qty, price: tl(price), option, optionLabel: optLabel } : { id, title, kind, qty, price: tl(price) })
       subtotal += price * qty
       if (kind !== "workshop") physical = true
     }
@@ -286,7 +299,7 @@ function status(e) {
   return {
     number: order.getString("number"),
     status: order.getString("status"),
-    items: items(order).map((l) => ({ title: l.title, qty: l.qty, price: l.price, kind: l.kind })),
+    items: items(order).map((l) => ({ title: l.title, qty: l.qty, price: l.price, kind: l.kind, option: l.option || "", name: lineName(l) })),
     subtotal: order.getFloat("subtotal"),
     shipping: order.getFloat("shipping"),
     total: order.getFloat("total"),
@@ -364,7 +377,7 @@ function merchantAddress(app) {
 }
 
 function orderTable(order) {
-  const rows = items(order).map((l) => `<tr><td style="padding:8px 0;border-top:1px solid #e5e5e5;font-size:15px;">${esc(l.title)} × ${esc(l.qty)}</td>`
+  const rows = items(order).map((l) => `<tr><td style="padding:8px 0;border-top:1px solid #e5e5e5;font-size:15px;">${esc(lineName(l))} × ${esc(l.qty)}</td>`
     + `<td align="right" style="padding:8px 0;border-top:1px solid #e5e5e5;font-size:15px;white-space:nowrap;">${esc(money(l.price * l.qty))}</td></tr>`)
   if (order.getFloat("shipping") > 0) rows.push(`<tr><td style="padding:8px 0;border-top:1px solid #e5e5e5;">Kargo</td><td align="right" style="padding:8px 0;border-top:1px solid #e5e5e5;">${esc(money(order.getFloat("shipping")))}</td></tr>`)
   rows.push(`<tr><th align="left" style="padding:10px 0;border-top:2px solid #333;">Toplam</th><th align="right" style="padding:10px 0;border-top:2px solid #333;">${esc(money(order.getFloat("total")))}</th></tr>`)
@@ -412,4 +425,4 @@ function notifyPaid(app, order) {
   }
 }
 
-module.exports = { DEFAULTS, HOLD, STATUSES, options, checkout, callback, applyResult, status, expire, beforeCreate, beforeUpdate, beforeDelete, transition }
+module.exports = { DEFAULTS, HOLD, STATUSES, lineName, options, checkout, callback, applyResult, status, expire, beforeCreate, beforeUpdate, beforeDelete, transition }

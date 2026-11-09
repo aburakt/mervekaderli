@@ -16,6 +16,9 @@
     "new-site": "bun scripts/new-site.ts"
   },
   "devDependencies": {
-    "oxlint": "1.88.0"
+    "oxlint": "1.91.0"
+  },
+  "overrides": {
+    "@emnapi/runtime": "1.11.3"
   }
 }

@@ -6,13 +6,14 @@
 // Sayfada inline betik yok: ödeme formu DOM'da kurulup gönderilir (CSP form-action'a sağlayıcı build'de eklenir).
 
 export type ProductKind = "product" | "workshop"
-export type CartLine = { id: string; title: string; price: number; qty: number; kind: ProductKind; image?: string; url?: string; max?: number }
+// option: ürünün seçeneği (ör. beden, site.js SHOP.option); aynı ürünün farklı seçenekleri ayrı satırdır
+export type CartLine = { id: string; title: string; price: number; qty: number; kind: ProductKind; image?: string; url?: string; max?: number; option?: string; optionLabel?: string }
 export type Buyer = { name: string; email: string; phone: string; address?: string; city?: string; postcode?: string; country?: string }
 export type CheckoutInput = { buyer: Buyer; note?: string; kvkk_consent: boolean; contract_consent: boolean; marketing_consent?: boolean }
 export type Payment = { action: string; method: string; fields: Record<string, string | number> }
 export type CheckoutResult = { number: string; token: string; total: number; payment: Payment }
 export type OrderStatus = "pending" | "paid" | "failed" | "expired" | "shipped" | "delivered" | "cancelled" | "refunded"
-export type OrderView = { number: string; status: OrderStatus; items: { title: string; qty: number; price: number; kind: ProductKind }[]; subtotal: number; shipping: number; total: number; created: string }
+export type OrderView = { number: string; status: OrderStatus; items: { title: string; qty: number; price: number; kind: ProductKind; option?: string; name?: string }[]; subtotal: number; shipping: number; total: number; created: string }
 export type LiveProduct = { id: string; price: number; stock: number }
 
 const KEY = "shop_cart_v1"
@@ -47,23 +48,31 @@ function writeCart(lines: CartLine[]): void {
   window.dispatchEvent(new CustomEvent(CART_EVENT, { detail: lines }))
 }
 
+/** Satırın sepetteki anahtarı: ürün kimliği, seçenek varsa "kimlik|seçenek". setQty/removeFromCart bunu alır. */
+export const lineKey = (l: Pick<CartLine, "id" | "option">): string => (l.option ? `${l.id}|${l.option}` : l.id)
+/** Satırın görünen adı: "Ad (Beden: 38)". */
+export const lineName = (l: Pick<CartLine, "title" | "option" | "optionLabel">): string =>
+  l.option ? `${l.title} (${l.optionLabel ?? "Seçenek"}: ${l.option})` : l.title
+
 const clamp = (qty: number, max?: number) => Math.max(0, Math.min(Math.floor(qty), max ?? 20, 20))
 
-/** Sepete ekler (aynı ürün varsa adedi artar); stok sınırını aşmaz. Eklenen son adedi döndürür. */
+/** Sepete ekler (aynı ürün ve seçenek varsa adedi artar); stok sınırını aşmaz (ürünün bütün seçenekleri birlikte). Eklenen son adedi döndürür. */
 export function addToCart(line: Omit<CartLine, "qty">, qty = 1): number {
   const lines = readCart()
-  const found = lines.find((l) => l.id === line.id)
-  const next = clamp((found?.qty ?? 0) + qty, line.max)
-  writeCart(found ? lines.map((l) => (l.id === line.id ? { ...l, ...line, qty: next } : l)) : [...lines, { ...line, qty: next }])
+  const key = lineKey(line)
+  const found = lines.find((l) => lineKey(l) === key)
+  const others = lines.filter((l) => l.id === line.id && lineKey(l) !== key).reduce((n, l) => n + l.qty, 0)
+  const next = clamp((found?.qty ?? 0) + qty, line.max === undefined ? undefined : line.max - others)
+  writeCart(found ? lines.map((l) => (lineKey(l) === key ? { ...l, ...line, qty: next } : l)) : [...lines, { ...line, qty: next }].filter((l) => l.qty > 0))
   return next
 }
 
-/** Adedi değiştirir; 0 olursa ürün sepetten çıkar. */
-export function setQty(id: string, qty: number): void {
-  writeCart(readCart().map((l) => (l.id === id ? { ...l, qty: clamp(qty, l.max) } : l)).filter((l) => l.qty > 0))
+/** Adedi değiştirir; 0 olursa satır sepetten çıkar. key: lineKey(satır) (seçeneksiz üründe ürün kimliği). */
+export function setQty(key: string, qty: number): void {
+  writeCart(readCart().map((l) => (lineKey(l) === key ? { ...l, qty: clamp(qty, l.max) } : l)).filter((l) => l.qty > 0))
 }
 
-export const removeFromCart = (id: string): void => writeCart(readCart().filter((l) => l.id !== id))
+export const removeFromCart = (key: string): void => writeCart(readCart().filter((l) => lineKey(l) !== key))
 export const clearCart = (): void => writeCart([])
 export const cartCount = (lines = readCart()): number => lines.reduce((n, l) => n + l.qty, 0)
 export const cartSubtotal = (lines = readCart()): number => Math.round(lines.reduce((n, l) => n + Math.round(l.price * 100) * l.qty, 0)) / 100
@@ -113,7 +122,7 @@ export async function checkout(api: ShopApi, input: CheckoutInput, lines = readC
   const res = await fetch(`${api.pb}/api/${api.id}/shop/checkout`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ ...input, items: lines.map((l) => ({ id: l.id, qty: l.qty })) }),
+    body: JSON.stringify({ ...input, items: lines.map((l) => (l.option ? { id: l.id, qty: l.qty, option: l.option } : { id: l.id, qty: l.qty })) }),
   })
   const body = (await res.json().catch(() => ({}))) as CheckoutResult & { message?: string }
   if (!res.ok) throw new Error(body.message || "Sipariş oluşturulamadı. Lütfen tekrar deneyin.")

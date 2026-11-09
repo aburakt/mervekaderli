@@ -27,7 +27,10 @@ export function allowFormAction(headers: string, origin: string): string {
 }
 
 /** Mağaza ödeme sağlayıcılarının ödeme sayfası kökeni (lib/shop-<provider>.js ENDPOINT ile aynı). */
-export const PAYMENT_ORIGINS: Record<string, string> = { shopier: "https://www.shopier.com" }
+export const PAYMENT_ORIGINS: Record<string, string[]> = {
+  shopier: ["https://www.shopier.com"],
+  iyzico: ["https://cpp.iyzipay.com", "https://sandbox-cpp.iyzipay.com"],
+}
 
 type SiteJs = { FORMS?: string[]; SHOP?: { provider?: string } | null }
 
@@ -53,7 +56,7 @@ export default function pbCsp(): AstroIntegration {
           if (site.SHOP) {
             origins.push([new URL(pbUrl).origin, "mağaza"])
             const pay = PAYMENT_ORIGINS[site.SHOP.provider ?? "shopier"]
-            if (pay) actions.push(pay)
+            if (pay) actions.push(...pay)
           }
         } catch (err) {
           logger.warn(`${SITE_JS} okunamadı, form/mağaza için CSP değişmedi: ${String(err)}`)

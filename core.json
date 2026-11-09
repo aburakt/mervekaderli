@@ -23,6 +23,7 @@
     "pb/pb_hooks/lib/mail.js",
     "pb/pb_hooks/lib/protect.js",
     "pb/pb_hooks/lib/report.js",
+    "pb/pb_hooks/lib/shop-iyzico.js",
     "pb/pb_hooks/lib/shop-shopier.js",
     "pb/pb_hooks/lib/shop.js",
     "pb/pb_hooks/lib/version.js",
@@ -81,6 +82,7 @@
     "tests/panel.test.ts",
     "tests/seed-remote.test.ts",
     "tests/shop-client.test.ts",
+    "tests/shop-iyzico.test.ts",
     "tests/shop.test.ts",
     "tests/tr.test.ts",
     "tests/webmcp.test.ts"

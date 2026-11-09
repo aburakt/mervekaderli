@@ -11,13 +11,15 @@ export type ShopSettings = {
   reserveMinutes: number
   shipping: { price: number; freeOver: number }
   returnPath: string
+  // ürün seçeneği (ör. beden): sayfa seçim kutusunu bu alandan kurar, sepet satırına optionLabel yazar
+  option: { field: string; label: string } | null
 }
 
 type SiteJs = { ID: string; SHOP?: Partial<ShopSettings> | null }
 
 // site.js metni build'de pakete girer (?raw): sayfa kodu paketlendikten sonra dosya yolu tutmaz.
 // pb/pb_hooks/lib/shop.js DEFAULTS ile aynı
-const DEFAULTS: ShopSettings = { provider: "shopier", reserveMinutes: 30, shipping: { price: 0, freeOver: 0 }, returnPath: "/siparis/" }
+const DEFAULTS: ShopSettings = { provider: "shopier", reserveMinutes: 30, shipping: { price: 0, freeOver: 0 }, returnPath: "/siparis/", option: null }
 
 function siteJs(): SiteJs {
   const mod: { exports: SiteJs } = { exports: { ID: "" } }
@@ -29,7 +31,8 @@ function siteJs(): SiteJs {
 export function shopSettings(): ShopSettings | null {
   const shop = siteJs().SHOP
   if (!shop) return null
-  return { ...DEFAULTS, ...shop, shipping: { ...DEFAULTS.shipping, ...shop.shipping } }
+  const option = shop.option?.field ? { field: shop.option.field, label: shop.option.label || "Seçenek" } : null
+  return { ...DEFAULTS, ...shop, shipping: { ...DEFAULTS.shipping, ...shop.shipping }, option }
 }
 
 /** Ödeme açık mı: mağaza var ve build PB'ye bağlı (önizleme değil). */

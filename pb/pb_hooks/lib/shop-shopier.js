@@ -59,7 +59,8 @@ function start(app, order, opts) {
   const currency = CURRENCY.TRY
   const random = $security.randomStringWithAlphabet(6, "123456789")
   const [name, surname] = splitName(order.getString("buyer_name"))
-  const title = items.map((l) => (l.qty > 1 ? `${l.title} x${l.qty}` : l.title)).join(", ")
+  const { lineName } = require(`${__hooks}/lib/shop.js`)
+  const title = items.map((l) => (l.qty > 1 ? `${lineName(l)} x${l.qty}` : lineName(l))).join(", ")
   // atölye kaydında adres yok: Shopier boş alan kabul etmez
   const address = order.getString("address") || "Atölye kaydı"
   const city = order.getString("city") || "-"

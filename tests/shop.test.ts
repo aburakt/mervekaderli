@@ -120,8 +120,11 @@ describe("mağaza şeması", () => {
     expect(orders.fields.find((f) => f.name === "token")?.hidden).toBe(true)
   })
 
-  test("her koleksiyonun ve alanın Türkçe panel etiketi core-labels.json'da", async () => {
-    const labels = (await Bun.file(join(ROOT, "pb", "pb_hooks", "panel", "core-labels.json")).json()) as { collections: Record<string, string>; fields: Record<string, string> }
+  test("her koleksiyonun ve alanın Türkçe panel etiketi core-labels.json'da (sitenin eklediği alanlar labels.json'da)", async () => {
+    type Labels = { collections: Record<string, string>; fields: Record<string, string> }
+    const core = (await Bun.file(join(ROOT, "pb", "pb_hooks", "panel", "core-labels.json")).json()) as Labels
+    const own = (await Bun.file(join(ROOT, "pb", "pb_hooks", "panel", "labels.json")).json()) as Partial<Labels>
+    const labels = { collections: { ...core.collections, ...own.collections }, fields: { ...core.fields, ...own.fields } }
     const missing: string[] = []
     for (const name of ["products", "orders"]) {
       if (!labels.collections[name]) missing.push(name)
